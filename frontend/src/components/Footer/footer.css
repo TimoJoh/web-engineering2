@@ -1,0 +1,15 @@
+.footer-section {
+  background-color: #f3f3f3;
+  padding: 20px;
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+}
+
+.footer-section div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 95vw;
+  margin: auto;
+}

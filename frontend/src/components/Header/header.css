@@ -1,0 +1,58 @@
+.header-section {
+    max-width: 85vw;
+    height: 75px;
+    margin: 40px auto;
+    position: relative;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 0.3rem;
+}
+
+.header-section img {
+    width: 75px;
+    height: 75px;
+}
+
+.header-section div {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 1.3rem;
+    color: #000000;
+}
+
+.header-section input {
+    min-width: 600px;
+    padding: 13px 7px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    outline: none;
+    border-radius: 0.3rem;
+    color: #000000;
+    text-indent: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.header-section input::placeholder {
+    color: #000000;
+}
+
+.header-section button {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    border-radius: 0.3rem;
+    margin-left: 0.2rem;
+    color: #000000;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
