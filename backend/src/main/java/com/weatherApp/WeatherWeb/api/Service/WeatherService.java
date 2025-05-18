@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class WeatherService {
@@ -35,14 +38,38 @@ public class WeatherService {
     }
     }
 
+    private String formatUnixTime(long unixSeconds) {
+        Instant instant = Instant.ofEpochSecond(unixSeconds);
+        return DateTimeFormatter.ofPattern("HH:mm")
+                .withZone(ZoneId.of("Europe/Berlin")) // lokale Zeitzone
+                .format(instant);
+    }
+
     private CityWeatherData parseWeatherResponse(String json, String city) {
+
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(json);
             String temperature = root.get("main").path("temp").asText() + "°C";
+            String fellsLike = root.path("main").path("feels_like").asText() + "°C";
+            int pressure = root.path("main").path("pressure").asInt();
+            int humidity = root.path("main").path("humidity").asInt();
+
+            long sunriseRaw = root.path("sys").path("sunrise").asLong();
+            long sunsetRaw = root.path("sys").path("sunset").asLong();
+
+            String sunrise = formatUnixTime(sunriseRaw);
+            String sunset = formatUnixTime(sunsetRaw);
+
+            double windSpeed = root.path("wind").path("speed").asDouble();
+            int windDegree = root.path("wind").path("deg").asInt();
+
             String condition = root.get("weather").get(0).path("description").asText();
 
-            return new CityWeatherData(city, temperature, condition);
+            return new CityWeatherData(city, temperature, condition,
+                    fellsLike, pressure, humidity,
+                    sunrise, sunset, windSpeed, windDegree);
+
         } catch (Exception e) {
             throw new RuntimeException("Fehler beim Parsen der Wetterdaten", e);
         }
