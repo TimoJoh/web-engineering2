@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### API ###
-/src/main/ressources/application.secrets.properties
+/src/main/resources/application.secrets.properties
