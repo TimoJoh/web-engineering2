@@ -13,6 +13,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border-radius: 0.3rem;
+    z-index: 1; /* kleiner als Dropdown */
 }
 
 .header-section img {
@@ -22,6 +23,7 @@
 
 .header-section div {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 0.3rem;
     font-size: 1.3rem;
@@ -58,14 +60,9 @@
 
 .search-container {
     position: relative;
-    width: 600px; /* Match your input's min-width */
+    width: 650px;
     display: flex;
     align-items: center;
-}
-
-.autocomplete-root {
-    position: relative;
-    width: 100%;
 }
 
 /* Dropdown menu */
@@ -80,7 +77,6 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 0.3rem;
-    z-index: 999;
     max-height: 250px;
     overflow-y: auto;
     margin-top: 0.3rem;

@@ -1,0 +1,79 @@
+.card{
+    width: 35vw;
+    height: auto;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+    "header today"
+    "today-temp today"
+    "time today"
+    "forecast forecast";
+}
+.header {
+    grid-area: header;
+    margin: 1.5rem 0 0 1.5rem;
+    font-size: 1.5rem;
+}
+
+.today {
+    grid-area: today;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-right: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.today img{
+    width: 45%;
+    height: auto;
+}
+
+.today-temp {
+    grid-area: today-temp;
+    font-size: 3rem;
+    margin: 1.5rem 0 0.5rem 1.5rem;
+}
+
+.time {
+    grid-area: time;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.forecast {
+    grid-area: forecast;
+    margin: 1.5rem ;
+}
+
+.forecast ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast li{
+    justify-items: center;
+}
+
+.forecast img{
+    width: 120%;
+    height: auto;
+}
+
+.forecast .temp{
+    margin: 0.25rem 0;
+    font-size: 1.25rem
+}

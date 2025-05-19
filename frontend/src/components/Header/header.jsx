@@ -51,7 +51,7 @@ const Header = () => {
                 <img src={Logo} alt="Logo" />
             </div>
 
-            <div className="search-container" style={{ position: "relative" }}>
+            <div className="search-container">
                 <IonIcon name="search-outline" />
                 <input
                     type="text"
