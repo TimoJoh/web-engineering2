@@ -32,7 +32,6 @@
     min-width: 600px;
     padding: 13px 7px;
     background: rgba(0, 0, 0, 0.1);
-    border: none;
     outline: none;
     border-radius: 0.3rem;
     color: #000000;
@@ -55,4 +54,48 @@
     color: #000000;
     font-size: 1.1rem;
     cursor: pointer;
+}
+
+.search-container {
+    position: relative;
+    width: 600px; /* Match your input's min-width */
+    display: flex;
+    align-items: center;
+}
+
+.autocomplete-root {
+    position: relative;
+    width: 100%;
+}
+
+/* Dropdown menu */
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 0.3rem;
+    z-index: 999;
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 0.3rem;
+}
+
+/* Suggestion item */
+.suggestion-item {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    color: #000000;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+/* Active (hovered/selected) suggestion */
+.suggestion-item--active {
+    background-color: rgba(0, 0, 0, 0.1);
 }
