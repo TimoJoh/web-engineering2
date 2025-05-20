@@ -1,18 +1,22 @@
-import axios from 'axios';
 import './index.css';
 import React from "react";
-import Header from "./components/Header/header";
-import Footer from "./components/Footer/footer";
-import Weatherdash from "./components/Weatherdash/weatherdash";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+} from "react-router-dom";
+import Index from "./pages/index";
+import Weather from "./pages/weather";
 
 
 const App = () => {
     return (
-        <>
-            <Header/>
-            <Weatherdash/>
-            <Footer/>
-        </>
+        <Router>
+            <Routes>
+                <Route exact path="/" element={<Index />} />
+                <Route exact path="/weather" element={<Weather />} />
+            </Routes>
+        </Router>
     );
 };
 
