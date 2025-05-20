@@ -15,39 +15,56 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 
+/**
+ * The {@code AppConfig} class is responsible for defining application-wide
+ * configurations such as the creation of a custom {@link RestTemplate} bean.
+ * This configuration explicitly disables SSL verification for the purpose of
+ * enabling API communication from within secured work environments.
+ */
 @Configuration
 public class AppConfig {
 
+    /**
+     * Creates a {@link RestTemplate} bean with a custom HTTP client configuration
+     * that disables SSL verification. This is intentionally done to facilitate API
+     * communication on secured work computers that might otherwise block requests
+     * due to strict SSL checks.
+     *
+     * @return a {@link RestTemplate} instance configured with an HTTP client that
+     *         bypasses SSL verification.
+     * @throws RuntimeException if there is an error during the creation of the RestTemplate.
+     */
     @Bean
     public RestTemplate restTemplate() {
         try {
-            // SSL-Kontext, der alle Zertifikate akzeptiert
+            // Create an SSL context that accepts all certificates
             SSLContext sslContext = SSLContextBuilder.create()
-                    .loadTrustMaterial(new TrustAllStrategy())
+                    .loadTrustMaterial(new TrustAllStrategy()) // Trusts all certificates
                     .build();
 
-            // SSL-Socket-Factory mit deaktiviertem Hostname-Check
+            // Create an SSL socket factory with disabled hostname verification
             var sslSocketFactory = SSLConnectionSocketFactoryBuilder.create()
                     .setSslContext(sslContext)
-                    .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                    .setHostnameVerifier(NoopHostnameVerifier.INSTANCE) // Disables hostname verification
                     .build();
 
-            // Connection Manager mit SSL-Socket-Factory
+            // Create a connection manager that uses the custom SSL socket factory
             PoolingHttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
                     .setSSLSocketFactory(sslSocketFactory)
                     .build();
 
-            // HttpClient mit Connection Manager
+            // Create an HTTP client with the custom connection manager
             CloseableHttpClient httpClient = HttpClients.custom()
                     .setConnectionManager(connectionManager)
                     .build();
 
-            // RestTemplate mit unsicherem HttpClient
+            // Configure the RestTemplate to use the custom HTTP client
             HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
             return new RestTemplate(requestFactory);
 
         } catch (Exception e) {
-            throw new RuntimeException("Fehler beim Erstellen des unsicheren RestTemplate", e);
+            // Throw a runtime exception if any configuration step fails
+            throw new RuntimeException("Error while creating the insecure RestTemplate", e);
         }
     }
 }
