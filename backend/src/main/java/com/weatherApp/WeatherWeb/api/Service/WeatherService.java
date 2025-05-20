@@ -3,6 +3,7 @@ package com.weatherApp.WeatherWeb.api.Service;
 import com.weatherApp.WeatherWeb.api.Models.CityWeatherData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherApp.WeatherWeb.api.Models.HourlyWeatherResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -73,5 +74,18 @@ public class WeatherService {
         } catch (Exception e) {
             throw new RuntimeException("Fehler beim Parsen der Wetterdaten", e);
         }
+    }
+
+    public HourlyWeatherResponse getHourlyWeatherForCity(String cityName) {
+        String url = String.format("https://pro.openweathermap.org/data/2.5/forecast/hourly?q=%s&appid=%s&units=metric",
+                cityName, apiKey);
+            ResponseEntity<HourlyWeatherResponse> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    HourlyWeatherResponse.class
+            );
+
+            return response.getBody();
     }
 }

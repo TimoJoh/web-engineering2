@@ -1,6 +1,6 @@
 package com.weatherApp.WeatherWeb.api.Controller;
 
-import com.weatherApp.WeatherWeb.api.Util.CityDataParser;
+import com.weatherApp.WeatherWeb.api.Models.HourlyWeatherResponse;
 import com.weatherApp.WeatherWeb.api.Models.CityWeatherData;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +32,11 @@ public class WeatherAPIController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-    @GetMapping("/cities")
-    public ResponseEntity<List<String>> getCities() {
-        //Logik folgt später
-        return ResponseEntity.ok(List.of("Berlin", "Paris", "New York"));
+
+    @GetMapping("/hourly")
+    public ResponseEntity<HourlyWeatherResponse> getHourlyWeather(@RequestParam String city) {
+        HourlyWeatherResponse response = weatherService.getHourlyWeatherForCity(city);
+        return ResponseEntity.ok(response);
     }
+
 }
