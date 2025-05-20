@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./weathercard.css";
 import Clear from "../../assets/weathericons/clear-day.svg";
+
+const forecastData = [
+    { day: 'Mon', low: 21, high: 32, condition: Clear},
+    { day: 'Mon', low: 21, high: 32, condition: Clear},
+    { day: 'Mon', low: 21, high: 32, condition: Clear},
+    { day: 'Mon', low: 21, high: 32, condition: Clear},
+    { day: 'Mon', low: 21, high: 32, condition: Clear},];
 
 const Weathercard = ({city, temperature, condition}) => (
     <div className="card">
@@ -14,37 +21,24 @@ const Weathercard = ({city, temperature, condition}) => (
         <div className="today-temp">
             <p>{temperature}°C</p>
         </div>
-        <div className="time">
-            <p>18:00</p>
+        <div className="lh">
+            <p>L: 12°C</p>
+            <p>H: 25°C</p>
         </div>
+
         <div className="forecast">
-            <ul>
-                <li>
-                    <img src={Clear} alt=""/>
-                    <p className="temp">22°C</p>
-                    <p>Mon</p>
-                </li>
-                <li>
-                    <img src={Clear} alt=""/>
-                    <p className="temp">22°C</p>
-                    <p>Mon</p>
-                </li>
-                <li>
-                    <img src={Clear} alt=""/>
-                    <p className="temp">22°C</p>
-                    <p>Mon</p>
-                </li>
-                <li>
-                    <img src={Clear} alt=""/>
-                    <p className="temp">22°C</p>
-                    <p>Mon</p>
-                </li>
-                <li>
-                    <img src={Clear} alt=""/>
-                    <p className="temp">22°C</p>
-                    <p>Mon</p>
-                </li>
-            </ul>
+            {forecastData.map((forecast) => (
+                <ul>
+                    <li>
+                        <p className="forecast-day">Mon</p>
+                        <img src={forecast.condition} alt=""/>
+                        <div className="forecast-lh">
+                            <p className="l">{forecast.low}°</p>
+                            <p className="h">{forecast.high}°</p>
+                        </div>
+                    </li>
+                </ul>
+            ))}
         </div>
     </div>
 )

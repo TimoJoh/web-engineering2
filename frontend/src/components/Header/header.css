@@ -1,7 +1,7 @@
 .header-section {
     max-width: 85vw;
     height: 75px;
-    margin: 40px auto;
+    margin: 20px auto 40px auto;
     position: relative;
     padding: 0 25px;
     display: flex;
@@ -51,11 +51,20 @@
     background: rgba(0, 0, 0, 0);
     border: none;
     outline: none;
+    padding: 0.25rem;
     border-radius: 0.3rem;
     margin-left: 0.2rem;
     color: #000000;
     font-size: 1.1rem;
     cursor: pointer;
+}
+
+.header-section button:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.header-section button:active {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .search-container {

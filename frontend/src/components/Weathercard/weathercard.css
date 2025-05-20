@@ -13,7 +13,7 @@
     grid-template-areas:
     "header today"
     "today-temp today"
-    "time today"
+    "lh today"
     "forecast forecast";
 }
 .header {
@@ -44,36 +44,50 @@
     margin: 1.5rem 0 0.5rem 1.5rem;
 }
 
-.time {
-    grid-area: time;
+.lh {
+    display: flex;
+    gap: 1.25rem;
+    grid-area: lh;
     margin-left: 1.5rem;
     margin-bottom: 1.5rem;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
 }
 
 .forecast {
+    display: flex;
+    justify-content: space-between;
     grid-area: forecast;
     margin: 1.5rem ;
 }
 
-.forecast ul{
+.forecast ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    justify-content: space-between;
 }
 
 .forecast li{
     justify-items: center;
 }
 
-.forecast img{
-    width: 120%;
-    height: auto;
+.forecast .forecast-day{
+    font-size: 1.125rem;
+    font-weight: 400;
 }
 
-.forecast .temp{
-    margin: 0.25rem 0;
-    font-size: 1.25rem
+.forecast img{
+    width: 50px;
+    height: auto;
+    margin: 0.5rem 0;
+}
+
+.forecast .forecast-lh{
+    display: flex;
+    column-gap: 0.5rem;
+    font-size: 1.1rem;
+
+}
+
+.forecast .l{
+    color: #353535;
 }
