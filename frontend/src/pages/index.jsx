@@ -9,7 +9,7 @@ const Index = () => {
         <>
             <Header/>
             <Weatherdash/>
-            <Footer/>
+            {/*<Footer/>*/}
         </>
     );
 };

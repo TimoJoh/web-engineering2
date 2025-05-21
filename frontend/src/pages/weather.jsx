@@ -9,7 +9,7 @@ const Weather = () => {
         <>
             <Header/>
             <Weatherdetail/>
-            <Footer/>
+            {/*<Footer/>*/}
         </>
     );
 };
