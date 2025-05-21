@@ -17,6 +17,12 @@ public class CityWeatherData {
     // The current temperature as a formatted string (e.g., "20°C")
     private String temperature;
 
+    //The minimum temperatur for the day
+    private String minTemperature;
+
+    // The maximum temperatur of the day
+    private String maxTemperature;
+
     // The current weather condition (e.g., "Clear", "Rainy")
     private String condition;
 
@@ -64,12 +70,15 @@ public class CityWeatherData {
      * @param windSpeed   the wind speed
      * @param windDegree  the wind direction
      */
-    public CityWeatherData(String city, String temperature, String condition,
+    public CityWeatherData(String city, String temperature, String minTemperature,
+                           String maxTemperature, String condition,
                            String feelsLike, int pressure, int humidity,
                            String sunrise, String sunset, double windSpeed,
                            double windDegree) {
         this.city = city;
         this.temperature = temperature;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
         this.condition = condition;
         this.feelsLike = feelsLike;
         this.pressure = pressure;
@@ -246,6 +255,22 @@ public class CityWeatherData {
      */
     public String getFeelsLike() {
         return feelsLike;
+    }
+
+    public String getMaxTemperature() {
+        return maxTemperature;
+    }
+
+    public void setMaxTemperature(String maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
+    public String getMinTemperature() {
+        return minTemperature;
+    }
+
+    public void setMinTemperature(String minTemperature) {
+        this.minTemperature = minTemperature;
     }
 
     /**

@@ -3,10 +3,12 @@ package com.weatherApp.WeatherWeb.api.Service;
 import com.weatherApp.WeatherWeb.api.Models.CityWeatherData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherApp.WeatherWeb.api.Models.DailyWeatherResponse;
 import com.weatherApp.WeatherWeb.api.Models.HourlyWeatherResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
@@ -102,6 +104,8 @@ public class WeatherService {
 
             // Extract the relevant fields from the JSON response
             String temperature = root.get("main").path("temp").asText() + "°C";
+            String minTemperatur = root.get("main").path("temp_min").asText() + "°C";
+            String maxTemperatur = root.get("main").path("temp_max").asText() + "°C";
             String feelsLike = root.path("main").path("feels_like").asText() + "°C";
             int pressure = root.path("main").path("pressure").asInt();
             int humidity = root.path("main").path("humidity").asInt();
@@ -118,9 +122,10 @@ public class WeatherService {
             String condition = root.get("weather").get(0).path("description").asText();
 
             // Return a new CityWeatherData object containing the extracted data
-            return new CityWeatherData(city, temperature, condition,
-                    feelsLike, pressure, humidity,
-                    sunrise, sunset, windSpeed, windDegree);
+            return new CityWeatherData(city, temperature, minTemperatur,
+                    maxTemperatur, condition, feelsLike,
+                    pressure, humidity, sunrise,
+                    sunset, windSpeed, windDegree);
 
         } catch (Exception e) {
             // Throw an exception if JSON parsing fails
@@ -154,5 +159,25 @@ public class WeatherService {
 
         // Return the parsed hourly weather response
         return response.getBody();
+    }
+
+    public DailyWeatherResponse getDailyWeatherByCity(String cityName) {
+        String url = String.format("https://api.openweathermap.org/data/2.5/forecast/daily?q=%s&cnt=16&appid=%s&units=metric&lang=en",
+        cityName, apiKey
+        );
+
+        try{
+            ResponseEntity<DailyWeatherResponse> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    DailyWeatherResponse.class
+            );
+            //Return the parsed daily weather response
+            return response.getBody();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

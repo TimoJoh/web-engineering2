@@ -1,5 +1,6 @@
 package com.weatherApp.WeatherWeb.api.Controller;
 
+import com.weatherApp.WeatherWeb.api.Models.DailyWeatherResponse;
 import com.weatherApp.WeatherWeb.api.Models.HourlyWeatherResponse;
 import com.weatherApp.WeatherWeb.api.Models.CityWeatherData;
 import org.springframework.http.HttpStatus;
@@ -72,5 +73,14 @@ public class WeatherAPIController {
         // Fetch hourly weather forecasts from the service
         HourlyWeatherResponse response = weatherService.getHourlyWeatherForCity(city);
         return ResponseEntity.ok(response); // Return the forecast with an HTTP 200 status
+    }
+
+    @GetMapping("/daily")
+    public ResponseEntity<DailyWeatherResponse> getDailyWeather(@RequestParam String city) {
+        DailyWeatherResponse response = weatherService.getDailyWeatherByCity(city);
+        if (response == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(response);
     }
 }
