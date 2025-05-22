@@ -4,6 +4,7 @@ import DetailCurrent from "../Detail-current/detail-current";
 import DetailForecast from "../Detail-forecast/detail-forecast";
 import DetailHourly from "../Detail-hourly/detail-hourly";
 import DetailSunsetRise from "../Detail-sunset-rise/detail-sunset-rise"
+import DetailRainmap from "../Detail-rainmap/details-rainmap";
 import Clear from "../../assets/weathericons/clear-day.svg";
 
 const weatherData = [
@@ -42,6 +43,7 @@ const forecastData = [
     { day: 'Sun', low: 21, high: 32, condition: Clear}
 ];
 const sunstate = {sunrise: "06:30", sunset: "21:30"};
+const loc = {lat: 52.519, lon: 13.408};
 
 const Weatherdetail = () => {
     return (
@@ -50,9 +52,7 @@ const Weatherdetail = () => {
             <DetailHourly data={weatherData}/>
             <DetailForecast data={forecastData} />
             <DetailSunsetRise data={sunstate}/>
-            <div className="precipitation-map">
-
-            </div>
+            <DetailRainmap data={loc} />
         </div>
     )
 }

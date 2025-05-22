@@ -9,14 +9,3 @@
     grid-template-rows: auto auto;
     gap: 1.5rem;
 }
-
-.precipitation-map{
-    grid-area: rain;
-    width: auto;
-    height: auto;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
