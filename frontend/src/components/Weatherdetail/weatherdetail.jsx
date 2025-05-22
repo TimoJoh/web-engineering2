@@ -3,6 +3,7 @@ import './weatherdetail.css';
 import DetailCurrent from "../Detail-current/detail-current";
 import DetailForecast from "../Detail-forecast/detail-forecast";
 import DetailHourly from "../Detail-hourly/detail-hourly";
+import DetailSunsetRise from "../Detail-sunset-rise/detail-sunset-rise"
 import Clear from "../../assets/weathericons/clear-day.svg";
 
 const weatherData = [
@@ -20,7 +21,7 @@ const weatherData = [
     { hour: '11', temperature: 13, precipitation: 0.3, condition: Clear },
     { hour: '12', temperature: 19, precipitation: 0.1, condition: Clear },
     { hour: '13', temperature: 23, precipitation: 0, condition: Clear },
-    { hour: '14', temperature: 30, precipitation: 0, condition: Clear },
+    { hour: '14', temperature: 21, precipitation: 0, condition: Clear },
     { hour: '15', temperature: 20, precipitation: 0, condition: Clear },
     { hour: '16', temperature: 20, precipitation: 0, condition: Clear },
     { hour: '17', temperature: 24, precipitation: 0, condition: Clear },
@@ -39,7 +40,8 @@ const forecastData = [
     { day: 'Fri', low: 21, high: 32, condition: Clear},
     { day: 'Sat', low: 21, high: 32, condition: Clear},
     { day: 'Sun', low: 21, high: 32, condition: Clear}
-]
+];
+const sunstate = {sunrise: "06:30", sunset: "21:30"};
 
 const Weatherdetail = () => {
     return (
@@ -47,9 +49,7 @@ const Weatherdetail = () => {
             <DetailCurrent />
             <DetailHourly data={weatherData}/>
             <DetailForecast data={forecastData} />
-            <div className="sun">
-
-            </div>
+            <DetailSunsetRise data={sunstate}/>
             <div className="precipitation-map">
 
             </div>

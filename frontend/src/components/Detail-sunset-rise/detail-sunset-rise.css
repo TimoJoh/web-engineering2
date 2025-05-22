@@ -1,0 +1,104 @@
+.suns{
+    grid-area: sun;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle{
+    position: relative;
+    width: 85%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 8px solid #dbeafe;
+    background-color: white;
+    text-align: center;
+}
+
+.sun-info{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.sun-info.sunrise{
+    top: 10%;
+}
+
+.sun-info.sunset{
+    bottom: 10%;
+}
+
+.icon{
+    margin: 0 auto 4px ;
+    height: 600%;
+    width: 60%;
+}
+
+.state{
+    font-size: 1rem;
+    margin: 0;
+    color: #374151;
+}
+
+.time{
+    font-size: 1.25rem;
+}
+
+.horizon-line{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height:2px;
+    background-color: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.horizon{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    font-size: 0.825rem;
+    color: #374151;
+}
+
+.sun {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transition: transform 1s ease;
+    z-index: 2;
+}
+
+.celestial-wrapper {
+    z-index: 1;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #dbeafe;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: content-box;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 3px;
+}
+

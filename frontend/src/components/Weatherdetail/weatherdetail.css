@@ -5,21 +5,9 @@
     grid-template-areas:
         "current hourly hourly"
         "daily sun rain";
-    grid-template-columns: auto 1fr 1fr;
+    grid-template-columns: auto auto 1fr;
     grid-template-rows: auto auto;
     gap: 1.5rem;
-}
-
-
-.sun{
-    grid-area: sun;
-    width: auto;
-    height: auto;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .precipitation-map{
