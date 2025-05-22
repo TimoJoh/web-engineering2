@@ -1,0 +1,48 @@
+<!-- src/main/resources/static/location.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Standort</title>
+</head>
+<body>
+<h1>Dein Standort</h1>
+<p id="coordinates">Geokoordinaten werden geladen...</p>
+<p id="time">Systemzeit wird geladen...</p>
+
+<script>
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            document.getElementById('coordinates').textContent = `Geokoordinaten: ${latitude}, ${longitude}`;
+
+            // Sende Koordinaten an Spring Boot REST API
+            fetch('/api/location/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ latitude, longitude })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Antwort vom Server:", data);
+                })
+                .catch(err => {
+                    console.error("Fehler beim Senden der Koordinaten:", err);
+                });
+        }, error => {
+            document.getElementById('coordinates').textContent = 'Fehler beim Abrufen der Position.';
+        });
+    } else {
+        document.getElementById('coordinates').textContent = 'Geolocation wird nicht unterstützt.';
+    }
+
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('time').textContent = `Systemzeit: ${now.toLocaleTimeString()}`;
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime();
+</script>
+</body>
+</html>

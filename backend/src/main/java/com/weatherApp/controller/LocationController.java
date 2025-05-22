@@ -1,13 +1,14 @@
-package com.weatherApp.WeatherWeb.controller;
+package com.weatherApp.controller;
 
-import com.weatherApp.WeatherWeb.service.LocationService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import com.weatherApp.service.LocationService;
 
-@RestController
+@Controller
 @RequestMapping("/api/location")
 public class LocationController {
 
@@ -17,10 +18,24 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> getLocation(HttpServletRequest request) {
-        String ip = locationService.getClientIp(request);
-        Map<String, Object> location = locationService.getLocationFromIp(ip);
-        return ResponseEntity.ok(location);
+    @GetMapping("/")
+    public String home() {
+        // Leite die Root-URL an "/location.html" oder "/location" weiter
+        return "redirect:/location";
     }
+
+    // 1. Zeigt die HTML-Seite mit dem JavaScript (Geolocation im Browser)
+    @GetMapping("/page")
+    public String locationPage() {
+        return "redirect:/location.html"; //aus /static laden
+    }
+
+    // 2. Empfängt die vom Browser übermittelten Koordinaten
+    @PostMapping("/save")
+    @ResponseBody
+    public ResponseEntity<String> saveCoordinates(@RequestBody Map<String, Object> coords) {
+        locationService.processCoordinates(coords);
+        return ResponseEntity.ok("Koordinaten empfangen");
+    }
+
 }
