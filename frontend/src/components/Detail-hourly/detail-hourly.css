@@ -12,6 +12,13 @@
     overflow: visible;
 }
 
+
+.hourly-heading{
+    display: flex;
+    gap: 0.5rem;
+}
+
+
 .hourly h1{
     font-size: 1.125rem;
     font-weight: 600;

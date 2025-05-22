@@ -1,10 +1,14 @@
 import React from "react";
 import './detail-forecast.css';
+import {CalendarOutline} from "react-ionicons";
 
 const DetailForecast = ({data}) => {
     return (
         <div className="d-forecast">
-            <h1>7-Day Forecast</h1>
+            <div className="forecast-heading">
+                <CalendarOutline height="18px" width="18px" color="#000000"/>
+                <h1>7-Day Forecast</h1>
+            </div>
             {data.map((forecast) => (
                 <ul>
                     <li>

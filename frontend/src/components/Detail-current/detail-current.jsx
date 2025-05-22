@@ -26,7 +26,7 @@ const DetailCurrent = () => {
                     <p>22°C</p>
                 </div>
                 <div className="info">
-                    <Wind/>
+                    <Wind size={24}/>
                     <p>12km/h</p>
                 </div>
             </div>

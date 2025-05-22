@@ -26,6 +26,10 @@
     gap: 0.5rem;
 }
 
+.rain-heading path{
+    stroke-width: 48;
+}
+
 .leaflet-container {
     height: 100%;
     width: 100%;

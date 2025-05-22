@@ -10,6 +10,20 @@
     padding: 1.5rem;
 }
 
+
+.forecast-heading{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.forecast-heading path, rect{
+    stroke-width: 48;
+}
+
+.forecast-heading circle{
+    r: 30px;
+}
+
 .d-forecast h1 {
     font-size: 1.125rem;
     font-weight: 600;

@@ -9,6 +9,7 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
+import {Clock} from "lucide-react";
 
 
 const generateColorStops = (temperatures, tempColorMap) => {
@@ -139,8 +140,6 @@ const DetailHourly = ({data}) => {
     const maxTemp = Math.max(...data.map(d => d.temperature));
     const maxIndex = data.findIndex(d => d.temperature === maxTemp);
     const minIndex = data.findIndex(d => d.temperature === minTemp);
-
-
     const temperatures = data.map(d => d.temperature);
     const tempColorMap = [
         [-40, "#191F7F"],
@@ -163,7 +162,10 @@ const DetailHourly = ({data}) => {
 
     return (
         <div className="hourly">
-            <h1>Hourly Forecast</h1>
+            <div className="hourly-heading">
+                <Clock size={18} color="#000000" strokeWidth="2.75px"/>
+                <h1>7-Day Forecast</h1>
+            </div>
             <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0}}>
                     <XAxis

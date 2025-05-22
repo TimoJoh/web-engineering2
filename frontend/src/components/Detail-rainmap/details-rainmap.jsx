@@ -1,14 +1,14 @@
 import React from 'react';
 import './details-rainmap.css';
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import { Umbrella } from 'react-ionicons'
+import { UmbrellaOutline } from 'react-ionicons'
 
 
 const DetailRainmap = ({data}) => {
     return (
         <div className="map-wrapper">
             <div className="rain-heading">
-                <Umbrella height="18px" width="18px" color="#000000"/>
+                <UmbrellaOutline height="18px" width="18px" color="#000000"/>
                 <h1>Precipitation</h1>
             </div>
             <MapContainer center={[data.lat, data.lon]} zoom={10} scrollWheelZoom={false}>
