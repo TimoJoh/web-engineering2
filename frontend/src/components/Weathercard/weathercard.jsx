@@ -9,17 +9,17 @@ const forecastData = [
     { day: 'Mon', low: 21, high: 32, condition: Clear},
     { day: 'Mon', low: 21, high: 32, condition: Clear},];
 
-const Weathercard = ({city, temperature, condition}) => (
+const Weathercard = ({data}) => (
     <div className="card">
         <div className="header">
-            <p>{city}</p>
+            <p>{data.city}</p>
         </div>
         <div className="today">
-            <img src={Clear} alt={condition}/>
+            <img src={Clear} alt={data.condition}/>
             <p>Today</p>
         </div>
         <div className="today-temp">
-            <p>{temperature}°C</p>
+            <p>{data.temperature}°C</p>
         </div>
         <div className="lh">
             <p>L: 12°C</p>

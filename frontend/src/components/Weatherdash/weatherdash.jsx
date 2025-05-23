@@ -11,12 +11,10 @@ const weatherData = [
 const Weatherdash = () => {
     return (
         <div className="weatherdash">
-            {weatherData.map((weather, index) => (
+            {weatherData.map((weatherData, index) => (
                 <Weathercard
                     key={index}
-                    city={weather.city}
-                    temperature={weather.temperature}
-                    condition={weather.condition}
+                    data={weatherData}
                 />
             ))}
         </div>
