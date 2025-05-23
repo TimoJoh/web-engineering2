@@ -1,0 +1,93 @@
+.card{
+    width: 35vw;
+    height: auto;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+    "header today"
+    "today-temp today"
+    "lh today"
+    "forecast forecast";
+}
+.header {
+    grid-area: header;
+    margin: 1.5rem 0 0 1.5rem;
+    font-size: 1.5rem;
+}
+
+.today {
+    grid-area: today;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-right: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.today img{
+    width: 45%;
+    height: auto;
+}
+
+.today-temp {
+    grid-area: today-temp;
+    font-size: 3rem;
+    margin: 1.5rem 0 0.5rem 1.5rem;
+}
+
+.lh {
+    display: flex;
+    gap: 1.25rem;
+    grid-area: lh;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+}
+
+.forecast {
+    display: flex;
+    justify-content: space-between;
+    grid-area: forecast;
+    margin: 1rem 1.5rem 1.5rem 1.5rem;
+}
+
+.forecast ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.forecast li{
+    justify-items: center;
+}
+
+.forecast .forecast-day{
+    font-size: 1.125rem;
+    font-weight: 400;
+}
+
+.forecast img{
+    width: 50px;
+    height: auto;
+    margin: 0.5rem 0;
+}
+
+.forecast .forecast-lh{
+    display: flex;
+    column-gap: 0.5rem;
+    font-size: 1.1rem;
+
+}
+
+.forecast .l{
+    color: #353535;
+}

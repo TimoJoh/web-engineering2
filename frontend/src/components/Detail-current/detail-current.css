@@ -1,0 +1,74 @@
+.current{
+    grid-area: current;
+    width: auto;
+    height: auto;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.heading h1{
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.heading p{
+    font-size: 1rem;
+}
+
+.current-temp{
+    display: grid;
+    grid-template-areas:
+            "img temp"
+            "img cond";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    align-items: center;
+    column-gap: 3rem;
+    margin-top: 1.5rem;
+}
+
+.current-temp .temp{
+    grid-area: temp;
+    font-size: 3rem;
+}
+
+.current-temp .temp sup{
+    font-size: 1.5rem;
+}
+
+.current-temp .cond{
+    grid-area: cond;
+    font-size: 1.125rem;
+    align-self: start;
+}
+
+.current-temp img{
+    grid-area: img;
+    width: 100px;
+    height: auto;
+}
+
+.infos{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.75rem;
+}

@@ -1,0 +1,37 @@
+.map-wrapper{
+    grid-area: rain;
+    width: auto;
+    height: auto;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    padding: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.map-wrapper h1{
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.rain-heading{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.rain-heading path{
+    stroke-width: 48;
+}
+
+.leaflet-container {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+}
