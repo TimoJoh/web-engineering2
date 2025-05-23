@@ -1,6 +1,7 @@
 import React from 'react';
 import './weatherdash.css';
-import Weathercard from "../Weathercard/weathercard";
+// import Weathercard from "../Weathercard/weathercard";
+import WeathercardData from "../Weathercard/WeatherCardData";
 
 const weatherData = [
     { city: 'Berlin', temperature: 21, condition: 'Sunny' },
@@ -12,9 +13,9 @@ const Weatherdash = () => {
     return (
         <div className="weatherdash">
             {weatherData.map((weatherData, index) => (
-                <Weathercard
+                <WeathercardData
                     key={index}
-                    data={weatherData}
+                    city={weatherData.city}
                 />
             ))}
         </div>

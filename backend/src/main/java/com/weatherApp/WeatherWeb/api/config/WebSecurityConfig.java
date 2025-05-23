@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.*;
+
 
 @Configuration
 public class WebSecurityConfig   {
@@ -35,20 +37,26 @@ public class WebSecurityConfig   {
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
-
         http.authenticationProvider(authenticationProvider());
 
-        http.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/users").authenticated()
-                                .anyRequest().permitAll()
-                )
-                .formLogin(login ->
-                        login.usernameParameter("email")
-                                .defaultSuccessUrl("/users")
-                                .permitAll()
-                )
-                .logout(logout -> logout.logoutSuccessUrl("/").permitAll()
-                );
+        http
+                .securityMatcher("/users/**") // nur für /users Pfade
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .formLogin(login -> login.usernameParameter("email")
+                        .defaultSuccessUrl("/users")
+                        .permitAll())
+                .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
+
+        return http.build();
+    }
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/public/**") // nur für /public Pfade
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
         return http.build();
     }

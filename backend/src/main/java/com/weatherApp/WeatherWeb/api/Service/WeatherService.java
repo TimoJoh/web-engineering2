@@ -48,7 +48,7 @@ public class WeatherService {
      * Fetches the current weather for a given city from the OpenWeatherMap API.
      * 
      * Example API request: 
-     * {@code https://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units=metric&lang=de}
+     * {@code https://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units=metric&lang=en}
      *
      * @param city the name of the city for which weather data is requested.
      * @return a {@link CityWeatherData} object containing the parsed weather data.
@@ -56,7 +56,7 @@ public class WeatherService {
      */
     public CityWeatherData getWeatherForCity(String city) {
         String url = String.format(
-                "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric&lang=de",
+                "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric&lang=en",
                 city, apiKey
         );
 
