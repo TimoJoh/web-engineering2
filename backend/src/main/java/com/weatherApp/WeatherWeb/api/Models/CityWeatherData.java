@@ -1,9 +1,5 @@
 package com.weatherApp.WeatherWeb.api.Models;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
 /**
  * The {@code CityWeatherData} class represents current weather information
  * for a specific city. It includes details such as temperature, weather
