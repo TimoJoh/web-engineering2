@@ -74,6 +74,11 @@
     align-items: center;
 }
 
+.search-container span {
+    height: 22px;
+    width: 22px;
+}
+
 /* Dropdown menu */
 .autocomplete-dropdown {
     position: absolute;
@@ -103,4 +108,26 @@
 /* Active (hovered/selected) suggestion */
 .suggestion-item--active {
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+.login-container{
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+}
+
+.login-container:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.login-container:active {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.login-container span {
+    width: 22px;
+    height: 22px;
+}
+
+.login-container button:hover, button:active {
+    background: rgba(0, 0, 0, 0);
 }

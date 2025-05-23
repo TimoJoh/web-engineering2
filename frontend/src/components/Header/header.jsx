@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./header.css";
-import IonIcon from "@reacticons/ionicons";
+import {PersonOutline, SearchOutline} from "react-ionicons";
 import Logo from "../../assets/logo.png";
 import axios from "axios";
 
@@ -52,7 +52,7 @@ const Header = () => {
             </div>
 
             <div className="search-container">
-                <IonIcon name="search-outline" />
+                <SearchOutline />
                 <input
                     type="text"
                     placeholder="Stadt eingeben"
@@ -89,8 +89,8 @@ const Header = () => {
                 )}
             </div>
 
-            <div>
-                <IonIcon name="person-outline" />
+            <div className="login-container">
+                <PersonOutline />
                 <button>Login</button>
             </div>
         </section>
