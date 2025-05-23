@@ -103,10 +103,10 @@ public class WeatherService {
             JsonNode root = mapper.readTree(json);
 
             // Extract the relevant fields from the JSON response
-            String temperature = root.get("main").path("temp").asText() + "°C";
-            String minTemperatur = root.get("main").path("temp_min").asText() + "°C";
-            String maxTemperatur = root.get("main").path("temp_max").asText() + "°C";
-            String feelsLike = root.path("main").path("feels_like").asText() + "°C";
+            String temperature = root.get("main").path("temp").asText();
+            String minTemperatur = root.get("main").path("temp_min").asText();
+            String maxTemperatur = root.get("main").path("temp_max").asText();
+            String feelsLike = root.path("main").path("feels_like").asText();
             int pressure = root.path("main").path("pressure").asInt();
             int humidity = root.path("main").path("humidity").asInt();
 
@@ -162,7 +162,7 @@ public class WeatherService {
     }
 
     public DailyWeatherResponse getDailyWeatherByCity(String cityName) {
-        String url = String.format("https://api.openweathermap.org/data/2.5/forecast/daily?q=%s&cnt=16&appid=%s&units=metric&lang=en",
+        String url = String.format("https://api.openweathermap.org/data/2.5/forecast/daily?q=%s&cnt=7&appid=%s&units=metric&lang=en",
         cityName, apiKey
         );
 

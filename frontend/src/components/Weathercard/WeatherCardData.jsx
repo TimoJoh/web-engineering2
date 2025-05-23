@@ -17,6 +17,14 @@ function WeathercardData({ city }) {
                 console.error("Fehler beim Laden der Wetterdaten:", err);
                 setError("Wetterdaten konnten nicht geladen werden.");
             });
+
+        axios
+            .get("http://localhost:8080/api/daily", { params: { city } })
+            .then((res) => setForecastData(res.data))
+            .catch((err) => {
+                console.error("Fehler beim Laden der Wetterdaten:", err);
+                setError("Wetterdaten konnten nicht geladen werden.");
+            });
     }, [city]);
 
 
@@ -24,7 +32,7 @@ function WeathercardData({ city }) {
     if (error) return <p>{error}</p>;
     if (!weatherData) return <p>Lade Wetterdaten…</p>;
 
-    return <Weathercard data={weatherData} />;
+    return <Weathercard data={weatherData} forecast={forecastData} />;
 }
 
 export default WeathercardData;

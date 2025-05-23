@@ -1,4 +1,5 @@
 package com.weatherApp.WeatherWeb.api.Models;
+import java.math.*;
 
 /**
  * The {@code CityWeatherData} class represents current weather information
@@ -72,11 +73,11 @@ public class CityWeatherData {
                            String sunrise, String sunset, double windSpeed,
                            double windDegree) {
         this.city = city;
-        this.temperature = temperature;
-        this.minTemperature = minTemperature;
-        this.maxTemperature = maxTemperature;
+        this.temperature = cutDigits(temperature);
+        this.minTemperature = cutDigits(minTemperature);
+        this.maxTemperature = cutDigits(maxTemperature);
         this.condition = condition;
-        this.feelsLike = feelsLike;
+        this.feelsLike = cutDigits(feelsLike);
         this.pressure = pressure;
         this.humidity = humidity;
         this.sunrise = sunrise;
@@ -287,4 +288,9 @@ public class CityWeatherData {
         int index = (int) ((windDegree + 22.5) / 45) % 8;
         return richtungen[index];
         }
+
+    private String cutDigits(String number) {
+         Double num = Double.valueOf(number);
+         return String.format("%.0f", num);
+    }
     }
