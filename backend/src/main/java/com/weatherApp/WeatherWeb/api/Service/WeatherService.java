@@ -110,22 +110,22 @@ public class WeatherService {
             int pressure = root.path("main").path("pressure").asInt();
             int humidity = root.path("main").path("humidity").asInt();
 
-            long sunriseRaw = root.path("sys").path("sunrise").asLong();
-            long sunsetRaw = root.path("sys").path("sunset").asLong();
+            long sunrise = root.path("sys").path("sunrise").asLong();
+            long sunset = root.path("sys").path("sunset").asLong();
 
-            String sunrise = formatUnixTime(sunriseRaw);
-            String sunset = formatUnixTime(sunsetRaw);
+
 
             double windSpeed = root.path("wind").path("speed").asDouble();
             int windDegree = root.path("wind").path("deg").asInt();
 
             String condition = root.get("weather").get(0).path("description").asText();
+            int timezone = root.path("timezone").asInt();
 
             // Return a new CityWeatherData object containing the extracted data
             return new CityWeatherData(city, temperature, minTemperatur,
                     maxTemperatur, condition, feelsLike,
                     pressure, humidity, sunrise,
-                    sunset, windSpeed, windDegree);
+                    sunset, windSpeed, windDegree, timezone);
 
         } catch (Exception e) {
             // Throw an exception if JSON parsing fails

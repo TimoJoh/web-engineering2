@@ -38,7 +38,7 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/process_register", "/h2-console/**", "/api/**").permitAll()
+                        .requestMatchers("/", "/register", "/process_register", "/h2-console/**", "/api/**", "/swagger-ui/index.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

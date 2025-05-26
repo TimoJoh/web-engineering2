@@ -1,5 +1,10 @@
 package com.weatherApp.WeatherWeb.api.Models;
 import java.math.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The {@code CityWeatherData} class represents current weather information
@@ -46,6 +51,8 @@ public class CityWeatherData {
 
     private String windDirection;
 
+    private int timezone;
+
 
     /**
      * Default constructor for {@code CityWeatherData}.
@@ -70,8 +77,8 @@ public class CityWeatherData {
     public CityWeatherData(String city, String temperature, String minTemperature,
                            String maxTemperature, String condition,
                            String feelsLike, int pressure, int humidity,
-                           String sunrise, String sunset, double windSpeed,
-                           double windDegree) {
+                           long sunrise, long sunset, double windSpeed,
+                           double windDegree, int timezone) {
         this.city = city;
         this.temperature = cutDigits(temperature);
         this.minTemperature = cutDigits(minTemperature);
@@ -80,11 +87,12 @@ public class CityWeatherData {
         this.feelsLike = cutDigits(feelsLike);
         this.pressure = pressure;
         this.humidity = humidity;
-        this.sunrise = sunrise;
-        this.sunset = sunset;
+        this.sunrise = convertUnixToTimeString(sunrise, timezone);
+        this.sunset = convertUnixToTimeString(sunset,timezone);
         this.windSpeed = windSpeed;
         this.windDegree = windDegree;
         this.windDirection = windDegreeToDirection(windDegree);
+        this.timezone = timezone;
     }
 
     /**
@@ -194,8 +202,8 @@ public class CityWeatherData {
      * Sets the time of sunset.
      * @param sunset the sunset time to set
      */
-    public void setSunset(String sunset) {
-        this.sunset = sunset;
+    public void setSunset(long sunset) {
+        this.sunset = convertUnixToTimeString(sunset, timezone);
     }
 
     /**
@@ -210,8 +218,8 @@ public class CityWeatherData {
      * Sets the time of sunrise.
      * @param sunrise the sunrise time to set
      */
-    public void setSunrise(String sunrise) {
-        this.sunrise = sunrise;
+    public void setSunrise(long sunrise) {
+        this.sunrise = convertUnixToTimeString(sunrise, timezone);
     }
 
     /**
@@ -293,4 +301,18 @@ public class CityWeatherData {
          Double num = Double.valueOf(number);
          return String.format("%.0f", num);
     }
+    private String convertUnixToTimeString(long unixTime, int timezoneOffsetInSeconds) {
+        Instant instant = Instant.ofEpochSecond(unixTime);
+        // Statt LocalDateTime: Nutze OffsetDateTime
+        OffsetDateTime offsetDateTime = instant.atOffset(ZoneOffset.ofTotalSeconds(timezoneOffsetInSeconds));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return offsetDateTime.format(formatter);
     }
+
+    public int getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(int timezone) {
+        this.timezone = timezone;
+    }}

@@ -1,0 +1,4 @@
+2025-05-26 11:28:20.906297+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "USERSCITY" nicht gefunden
+Table "USERSCITY" not found; SQL statement:
+SELECT * FROM USERSCITY CITY [42102-232]
