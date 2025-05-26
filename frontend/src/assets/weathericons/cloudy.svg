@@ -4,7 +4,6 @@
   <defs>
     <filter id="blur" x="-.24684" y="-.27097" width="1.4937" height="1.6939">
       <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-      <feOffset dx="0" dy="4" result="offsetblur" />
       <feComponentTransfer>
         <feFuncA slope="0.05" type="linear" />
       </feComponentTransfer>

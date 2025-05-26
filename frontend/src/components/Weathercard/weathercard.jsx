@@ -1,30 +1,25 @@
 import React from "react";
 import "./weathercard.css";
-import Clear from "../../assets/weathericons/clear-day.svg"; // Platzhalter-Icon
+import {getWeatherIcon, getWeatherIconDayOnly} from "../Icon-fetch/icon-fetch"
 
 const Weathercard = ({ data, forecast }) => {
     const {
         city,
         temperature,
-        minTemperature,
-        maxTemperature,
         condition,
-        feelsLike,
-        pressure,
-        humidity,
         sunrise,
-        sunset,
-        windSpeed,
-        windDegree,
-        windDirection,
+        sunset
     } = data;
 
-    // Beispielhafte Funktion, um basierend auf der Beschreibung ein Icon zu wählen (hier sehr rudimentär)
-    const getIconByDescription = (description) => {
-        if (description.includes("rain")) return Clear; // Beispiel: Regen-Icon ersetzen
-        // Hier weitere Bedingungen einfügen
-        return Clear; // Default Icon
+    const now = new Date();
+    const parseTime = (t) => {
+        const [h, m] = t.split(':').map(Number);
+        const d = new Date();
+        d.setHours(h, m, 0, 0);
+        return d;
     };
+
+    const currentIconSrc = getWeatherIcon(condition, now, parseTime(sunrise), parseTime(sunset));
 
     return (
         <div className="card">
@@ -32,33 +27,43 @@ const Weathercard = ({ data, forecast }) => {
                 <p>{city}</p>
             </div>
             <div className="today">
-                <img src={Clear} alt={condition} />
+                <img src={currentIconSrc} alt={condition} />
                 <p>Today</p>
             </div>
             <div className="today-temp">
                 <p>{temperature}°C</p>
             </div>
             <div className="lh">
-                <p>L: {minTemperature}°C</p>
-                <p>H: {maxTemperature}°C</p>
+                {forecast?.list?.length > 0 && (
+                    <>
+                        <p>L: {Math.round(forecast.list[0].temp.min)}°C</p>
+                        <p>H: {Math.round(forecast.list[0].temp.max)}°C</p>
+                    </>
+                )}
             </div>
 
             <div className="forecast">
-                {forecast?.list?.slice(0, 5).map((day, index) => (
-                    <ul key={index}>
-                        <li>
-                            <p className="forecast-day">{day.weekday}</p>
-                            <img
-                                src={Clear}
-                                alt={day.weather[0].description}
-                            />
-                            <div className="forecast-lh">
-                                <p className="l">{Math.round(day.temp.min)}°</p>
-                                <p className="h">{Math.round(day.temp.max)}°</p>
-                            </div>
-                        </li>
-                    </ul>
-                ))}
+                {forecast?.list?.slice(0, 5).map((day, index) => {
+                    const condition = day.weather[0].description;
+                    const forecastIconSrc = getWeatherIconDayOnly(condition);
+                    const weekday = day.weekday;
+
+                    return(
+                        <ul key={index}>
+                            <li>
+                                <p className="forecast-day">{weekday}</p>
+                                <img
+                                    src={forecastIconSrc}
+                                    alt={condition}
+                                />
+                                <div className="forecast-lh">
+                                    <p className="l">{Math.round(day.temp.min)}°</p>
+                                    <p className="h">{Math.round(day.temp.max)}°</p>
+                                </div>
+                            </li>
+                        </ul>
+                        );
+                })}
             </div>
         </div>
     );
