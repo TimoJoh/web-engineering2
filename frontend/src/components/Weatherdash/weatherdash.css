@@ -6,6 +6,7 @@
     row-gap: 3rem;
     column-gap: 1rem;
     position: static;
+
 }
 
 .weatherdash > :nth-last-child(1):nth-child(odd) {

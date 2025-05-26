@@ -6,14 +6,18 @@ const DetailSunsetRise = ({data}) => {
     const [angle, setAngle] = useState(0);
     const [isDay, setIsDay] = useState(true);
 
+    const {
+        sunrise,
+        sunset
+    } = data
 
     useEffect(() => {
         const updatePosition = () => {
             const now = new Date();
             const today = now.toISOString().split("T")[0];
 
-            const sunriseTime = new Date(`${today}T${data.sunrise}:00`);
-            const sunsetTime = new Date(`${today}T${data.sunset}:00`);
+            const sunriseTime = new Date(`${today}T${sunrise}:00`);
+            const sunsetTime = new Date(`${today}T${sunset}:00`);
 
             let angle = 0;
             let isDay = false;
@@ -52,7 +56,7 @@ const DetailSunsetRise = ({data}) => {
         updatePosition();
         const interval = setInterval(updatePosition, 60 * 1000);
         return () => clearInterval(interval);
-    }, [data.sunrise, data.sunset]);
+    }, [sunrise, sunset]);
 
     const celestialStyle = {
         transform: `rotate(${angle}deg) translateX(-165.525px) rotate(-${angle}deg) translate(-50%, -50%)`
@@ -64,12 +68,12 @@ const DetailSunsetRise = ({data}) => {
                 <div className="sun-info sunrise">
                     <Sunrise className="icon" color="#ffa500"/>
                     <p className="state">Sunrise</p>
-                    <p className="time">{data.sunrise}</p>
+                    <p className="time">{sunrise}</p>
                 </div>
                 <div className="sun-info sunset">
                     <Sunset className="icon" color="#849AAA"/>
                     <p className="state">Sunset</p>
-                    <p className="time">{data.sunset}</p>
+                    <p className="time">{sunset}</p>
                 </div>
 
                 <div className="sun" style={celestialStyle}>

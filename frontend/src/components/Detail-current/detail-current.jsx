@@ -26,11 +26,23 @@ const DetailCurrent = ({data}) => {
 
     const currentIconSrc = getWeatherIcon(condition, now, parseTime(sunrise), parseTime(sunset));
 
+    const capitalizeFirstLetter = (string) => {
+        if (!string) return "";
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     return (
         <div className="current">
             <div className="heading">
-                <h1>{city}</h1>
-                <p>18:00</p>
+                <div className="data">
+                    <h1>{capitalizeFirstLetter(city)}</h1>
+                    <p>18:00</p>
+                </div>
+                <div className="add">
+                    <button>
+                        +
+                    </button>
+                </div>
             </div>
             <div className="current-temp">
                 <img src={currentIconSrc} alt="" width="100px" height="auto"/>

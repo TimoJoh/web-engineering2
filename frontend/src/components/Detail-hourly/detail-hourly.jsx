@@ -16,18 +16,49 @@ import {getWeatherIcon, getWeatherIconDayOnly} from "../Icon-fetch/icon-fetch";
 const generateColorStops = (temperatures, tempColorMap) => {
     const maxTemp = Math.max(...temperatures);
     const minTemp = Math.min(...temperatures);
+    const extendedMin = minTemp - 10; // New start of the gradient
     const stops = [];
 
     tempColorMap
-        .filter(([temp]) => temp >= minTemp && temp <= maxTemp)
+        .filter(([temp]) => temp >= extendedMin && temp <= maxTemp)
         .sort((a, b) => a[0] - b[0])
         .forEach(([temp, color]) => {
-            const offset = ((temp - minTemp) / (maxTemp - minTemp)) * 100;
+            const offset = ((temp - extendedMin) / (maxTemp - extendedMin)) * 100;
             stops.push(
                 <stop key={temp} offset={`${offset.toFixed(2)}%`} stopColor={color} />
             );
         });
 
+    const lastColor = tempColorMap
+        .filter(([temp]) => temp <= maxTemp)
+        .sort((a, b) => b[0] - a[0])[0][1];
+
+    stops.push(
+        <stop key="max" offset="100%" stopColor={lastColor} />
+    );
+
+    return stops;
+};
+
+const generateColorStopsLine = (temperatures, tempColorMap) => {
+    const maxTemp = Math.max(...temperatures);
+    const minTemp = Math.min(...temperatures);
+    const extendedMin = minTemp - 10;
+    const midPoint = extendedMin + 0.475* (maxTemp - extendedMin); // 50% buffer start
+
+    const stops = [];
+
+    tempColorMap
+        .filter(([temp]) => temp >= midPoint && temp <= maxTemp)
+        .sort((a, b) => a[0] - b[0])
+        .forEach(([temp, color]) => {
+            const offset = ((temp - midPoint) / (maxTemp - midPoint)) * 100;
+            stops.push(
+                <stop key={temp} offset={`${offset.toFixed(2)}%`} stopColor={color} />
+            );
+        });
+
+    // Ensure the gradient reaches 100% with the last color
     const lastColor = tempColorMap
         .filter(([temp]) => temp <= maxTemp)
         .sort((a, b) => b[0] - a[0])[0][1];
@@ -135,8 +166,6 @@ const HighlightDot = ({ cx, cy, index, maxIndex, minIndex }) => {
     return null;
 };
 
-
-
 const DetailHourly = ({apiData, sunTimes}) => {
 
     if (!apiData || !apiData.list) {
@@ -166,7 +195,6 @@ const DetailHourly = ({apiData, sunTimes}) => {
         [-5, "#3DBBF9"],
         [0, "#4ABFE9"],
         [5, "#51C9DB"],
-        [10, "#51D2C8"],
         [15, "#78D435"],
         [20, "#E2D829"],
         [25, "#FFDE1B"],
@@ -176,6 +204,7 @@ const DetailHourly = ({apiData, sunTimes}) => {
         [50, "#7D0000"],
     ];
     const gradientStops = generateColorStops(temperatures, tempColorMap);
+    const gradientStopsLine = generateColorStopsLine(temperatures, tempColorMap);
 
     return (
         <div className="hourly">
@@ -201,7 +230,7 @@ const DetailHourly = ({apiData, sunTimes}) => {
                         interval={1}
                     />
                     <YAxis yAxisId="left"
-                           domain={[Math.round(minTemp) - 10, Math.round(maxTemp) + 10]}
+                           domain={[Math.round(minTemp) - 10, Math.round(maxTemp) + 5]}
                            tickFormatter={(value) => `${value}°`}
                     />
                     <YAxis yAxisId="right"
@@ -214,6 +243,9 @@ const DetailHourly = ({apiData, sunTimes}) => {
                         <linearGradient id="tempGradient" x1="0" y1="1" x2="0" y2="0">
                             {gradientStops}
                         </linearGradient>
+                        <linearGradient id="tempGradientLine" x1="0" y1="1" x2="0" y2="0">
+                            {gradientStopsLine}
+                        </linearGradient>
                     </defs>
 
                     <Area
@@ -222,10 +254,10 @@ const DetailHourly = ({apiData, sunTimes}) => {
                         yAxisId="left"
                         type="monotone"
                         dataKey="temperature"
-                        stroke="url(#tempGradient)"
+                        stroke="url(#tempGradientLine)"
                         strokeWidth={2}
                         fill="url(#tempGradient)"
-                        fillOpacity={0.4}
+                        fillOpacity={0.6}
                         dot={(dotProps) => <HighlightDot {...dotProps} maxIndex={maxIndex} minIndex={minIndex} />}
                         activeDot={{fill: "white", stroke: "#454545"}}
                         name="Temperature (°C)"

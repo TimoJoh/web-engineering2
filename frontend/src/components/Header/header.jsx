@@ -3,8 +3,11 @@ import "./header.css";
 import {PersonOutline, SearchOutline} from "react-ionicons";
 import Logo from "../../assets/logo.png";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Header = ({ onCitySelect }) => {
+    const navigate = useNavigate();
+
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [selected, setSelected] = useState(false);
@@ -45,10 +48,19 @@ const Header = ({ onCitySelect }) => {
         }
     };
 
+    const handleSelectCity = (cityName) => {
+        setQuery(cityName);
+        setSelected(true);
+        setResults([]);
+        onCitySelect(cityName);
+        navigate(`/weather/${encodeURIComponent(cityName)}`);
+    };
+
     return (
         <section className="header-section">
             <div>
-                <img src={Logo} alt="Logo" />
+                <img src={Logo} alt="Logo" style={{ cursor: "pointer" }}
+                     onClick={() => navigate("/")}  />
             </div>
 
             <div className="search-container">
@@ -59,13 +71,11 @@ const Header = ({ onCitySelect }) => {
                     value={query}
                     onChange={(e) => {
                         setQuery(e.target.value);
-                        setSelected(false); // Reset selection if user types
+                        setSelected(false);
                     }}
                     onKeyDown={(e) => {
                         if (e.key === "Enter" && query.trim().length > 0) {
-                            setSelected(true);
-                            setResults([]);
-                            onCitySelect(query.trim());
+                            handleSelectCity(query.trim());
                         }
                     }}
                     autoComplete="off"
@@ -82,12 +92,7 @@ const Header = ({ onCitySelect }) => {
                                 <li
                                     key={p.osm_id}
                                     className="suggestion-item"
-                                    onClick={() => {
-                                        setQuery(p.name);        // Zeigt den Namen im Input
-                                        setSelected(true);       // Verhindert weitere Abfragen
-                                        setResults([]);          // Dropdown schließen
-                                        onCitySelect(p.name);    // <-- Wetterdaten nur hier abrufen!
-                                    }}
+                                    onClick={() => handleSelectCity(p.name)}
                                 >
                                     {label}
                                 </li>
