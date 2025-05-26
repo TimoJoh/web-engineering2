@@ -2,9 +2,7 @@ package com.weatherApp.WeatherWeb.api.Models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -15,6 +13,7 @@ import java.util.List;
 public class HourlyWeatherResponse {
 
     private City city;
+
     private List<HourlyForcast> list;
 
     public City getCity() {
@@ -35,6 +34,15 @@ public class HourlyWeatherResponse {
 
     public static class City {
         private String name;
+        private int timezone;
+
+        public int getTimezone() {
+            return timezone;
+        }
+
+        public void setTimezone(int timezone) {
+            this.timezone = timezone;
+        }
 
         public String getName() {
             return name;
@@ -51,6 +59,8 @@ public class HourlyWeatherResponse {
         private List<Weather> weather;
         private Rain rain;
 
+
+
         // No-Args-Konstruktor für Jackson
         public HourlyForcast() {}
 
@@ -60,7 +70,7 @@ public class HourlyWeatherResponse {
 
         @JsonProperty("dt")
         public void setDt(long unixTime) {
-            this.dt = convertUnixToTimeString(unixTime);
+            this.dt = convertUnixToTimeString(unixTime, 1000);
         }
 
         public Main getMain() {
@@ -134,10 +144,12 @@ public class HourlyWeatherResponse {
             }
         }
 
-        private String convertUnixToTimeString(long unixTime) {
-            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTime), ZoneId.of("Europe/Berlin"));
+        private String convertUnixToTimeString(long unixTime, int timezoneOffsetInSeconds) {
+            Instant instant = Instant.ofEpochSecond(unixTime);
+            // Statt LocalDateTime: Nutze OffsetDateTime
+            OffsetDateTime offsetDateTime = instant.atOffset(ZoneOffset.ofTotalSeconds(timezoneOffsetInSeconds));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-            return dateTime.format(formatter);
+            return offsetDateTime.format(formatter);
         }
     }
 }
