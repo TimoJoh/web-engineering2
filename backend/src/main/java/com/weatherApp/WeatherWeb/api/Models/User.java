@@ -1,6 +1,7 @@
 package com.weatherApp.WeatherWeb.api.Models;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,6 +25,9 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<City> cities;
+
     public Long getId() {
         return id;
     }
@@ -38,6 +42,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
     }
 
     public String getEmail() {

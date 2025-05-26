@@ -38,7 +38,7 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/process_register", "/h2-console/**").permitAll()
+                        .requestMatchers("/", "/register", "/process_register", "/h2-console/**", "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
