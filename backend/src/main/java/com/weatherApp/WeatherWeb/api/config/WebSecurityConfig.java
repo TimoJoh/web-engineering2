@@ -10,19 +10,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.*;
-
-
 @Configuration
-public class WebSecurityConfig   {
+public class WebSecurityConfig {
 
     @Bean
-    UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -31,32 +28,35 @@ public class WebSecurityConfig   {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
     @Bean
-    SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http.authenticationProvider(authenticationProvider());
 
         http
-                .securityMatcher("/users/**") // nur für /users Pfade
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .formLogin(login -> login.usernameParameter("email")
-                        .defaultSuccessUrl("/users")
-                        .permitAll())
-                .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/register", "/process_register", "/h2-console/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .failureUrl("/login?error=true")
+                        .usernameParameter("email")
+                        .defaultSuccessUrl("/users", true)
+                        .permitAll()
 
-        return http.build();
-    }
-
-    @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher("/public/**") // nur für /public Pfade
-                .cors(withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                )
+                .csrf(csrf -> csrf.disable()) // notwendig für H2-Konsole
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable()) // neue Syntax
+                );
 
         return http.build();
     }

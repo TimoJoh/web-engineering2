@@ -35,7 +35,7 @@ public class AppController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-
+        System.out.println("User wurde angelegt");
         userRepo.save(user);
 
         return "register_success";
@@ -47,5 +47,10 @@ public class AppController {
         model.addAttribute("listUsers", listUsers);
 
         return "users";
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "login";
     }
 }
