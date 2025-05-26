@@ -4,7 +4,7 @@ import {PersonOutline, SearchOutline} from "react-ionicons";
 import Logo from "../../assets/logo.png";
 import axios from "axios";
 
-const Header = () => {
+const Header = ({ onCitySelect }) => {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [selected, setSelected] = useState(false);
@@ -61,6 +61,13 @@ const Header = () => {
                         setQuery(e.target.value);
                         setSelected(false); // Reset selection if user types
                     }}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && query.trim().length > 0) {
+                            setSelected(true);
+                            setResults([]);
+                            onCitySelect(query.trim());
+                        }
+                    }}
                     autoComplete="off"
                 />
 
@@ -76,9 +83,10 @@ const Header = () => {
                                     key={p.osm_id}
                                     className="suggestion-item"
                                     onClick={() => {
-                                        setQuery(p.name);
-                                        setSelected(true); // Prevent refetching
-                                        setResults([]); // Hide suggestions
+                                        setQuery(p.name);        // Zeigt den Namen im Input
+                                        setSelected(true);       // Verhindert weitere Abfragen
+                                        setResults([]);          // Dropdown schließen
+                                        onCitySelect(p.name);    // <-- Wetterdaten nur hier abrufen!
                                     }}
                                 >
                                     {label}

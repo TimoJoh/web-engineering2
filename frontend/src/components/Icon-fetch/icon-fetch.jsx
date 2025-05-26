@@ -5,6 +5,7 @@ export function getWeatherIcon(condition, currentTime, sunriseTime, sunsetTime) 
 
     const map = {
         'clear sky': isDay ? 'clear-day' : 'clear-night',
+        'sky is clear': isDay ? 'clear-day' : 'clear-night',  // neu hinzugefügt
         'few clouds': isDay ? 'cloudy-1-day' : 'cloudy-1-night',
         'scattered clouds': 'cloudy',
         'broken clouds': 'cloudy',
@@ -42,13 +43,14 @@ export function getWeatherIcon(condition, currentTime, sunriseTime, sunsetTime) 
 export function getWeatherIconDayOnly(condition) {
     const map = {
         'clear sky': 'clear-day',
+        'sky is clear': 'clear-day',  // neu hinzugefügt
         'few clouds': 'cloudy-1-day',
         'scattered clouds': 'cloudy',
         'broken clouds': 'cloudy',
         'overcast clouds': 'cloudy',
         'light rain': 'rainy-3-day',
         'moderate rain': 'rainy-3-day',
-        'heavy intensity rain': 'rainy-3-day',
+        'heavy intensity rain': 'rainy-3',
         'drizzle': 'drizzle',
         'shower rain': 'rainy-3',
         'thunderstorm': 'thunderstorms',

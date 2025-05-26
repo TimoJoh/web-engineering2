@@ -10,6 +10,7 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 import {Clock} from "lucide-react";
+import {getWeatherIcon, getWeatherIconDayOnly} from "../Icon-fetch/icon-fetch";
 
 
 const generateColorStops = (temperatures, tempColorMap) => {
@@ -53,7 +54,9 @@ const CustomTooltip = ({ active, payload, label }) => {
                 <p style={{ margin: 0, fontWeight: 600}}>{`${label}:00`}</p>
                 {payload.map((entry, index) => (
                     <p key={index} style={{ margin: 0, color: "black"}}>
-                        {`${entry.name}: ${entry.value}`}
+                        {entry.name === "Temperature (°C)"
+                            ? `${entry.name}: ${Math.round(entry.value)}`
+                            : `${entry.name}: ${entry.value}`}
                     </p>
                 ))}
             </div>
@@ -72,7 +75,6 @@ const WeatherIconTick = ({ x, y, payload, data }) => {
             x={x - 12}
             y={y - 32}
             width={24}
-            height={24}
         />
     );
 };
@@ -135,7 +137,22 @@ const HighlightDot = ({ cx, cy, index, maxIndex, minIndex }) => {
 
 
 
-const DetailHourly = ({data}) => {
+const DetailHourly = ({apiData, sunTimes}) => {
+
+    if (!apiData || !apiData.list) {
+        return <div>Loading...</div>;
+    }
+
+    const data = apiData.list.slice(0,24).map((entry) => {
+        console.log(entry);
+        return {
+            hour: entry.dt.split(":")[0],
+            temperature: entry.main.temp,
+            precipitation: entry.rain?.["1h"] ?? 0,
+            condition: getWeatherIconDayOnly(entry.weather?.[0]?.description)
+        };
+    });
+
     const minTemp = Math.min(...data.map(d => d.temperature));
     const maxTemp = Math.max(...data.map(d => d.temperature));
     const maxIndex = data.findIndex(d => d.temperature === maxTemp);
@@ -164,7 +181,7 @@ const DetailHourly = ({data}) => {
         <div className="hourly">
             <div className="hourly-heading">
                 <Clock size={18} color="#000000" strokeWidth="2.75px"/>
-                <h1>7-Day Forecast</h1>
+                <h1>Hourly Forecast</h1>
             </div>
             <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0}}>
@@ -184,14 +201,14 @@ const DetailHourly = ({data}) => {
                         interval={1}
                     />
                     <YAxis yAxisId="left"
-                           domain={[minTemp - 5, maxTemp + 5]}
+                           domain={[Math.round(minTemp) - 10, Math.round(maxTemp) + 10]}
                            tickFormatter={(value) => `${value}°`}
                     />
                     <YAxis yAxisId="right"
                            domain={[0, 3]}
                            orientation="right"
                     />
-                    <Tooltip content={<CustomTooltip />} labelFormatter={(value) => value + ":00"}/>
+                    <Tooltip content={<CustomTooltip />} labelFormatter={(value) => `${value}:00`}/>
 
                     <defs>
                         <linearGradient id="tempGradient" x1="0" y1="1" x2="0" y2="0">

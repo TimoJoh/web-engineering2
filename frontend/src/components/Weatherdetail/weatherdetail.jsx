@@ -1,8 +1,8 @@
 import React from 'react';
 import './weatherdetail.css';
-import DetailCurrent from "../Detail-current/detail-current";
-import DetailForecast from "../Detail-forecast/detail-forecast";
-import DetailHourly from "../Detail-hourly/detail-hourly";
+import DetailCurrentData from "../Detail-current/detail-current-data";
+import DetailForecastData from "../Detail-forecast/detail-forecast-data";
+import DetailHourlyData from "../Detail-hourly/detail-hourly-data";
 import DetailSunsetRise from "../Detail-sunset-rise/detail-sunset-rise"
 import DetailRainmap from "../Detail-rainmap/details-rainmap";
 import Clear from "../../assets/weathericons/clear-day.svg";
@@ -45,14 +45,14 @@ const forecastData = [
 const sunstate = {sunrise: "06:30", sunset: "21:30"};
 const loc = {lat: 52.519, lon: 13.408};
 
-const Weatherdetail = () => {
+const Weatherdetail = ({city}) => {
     return (
         <div className="weatherdetail">
-            <DetailCurrent />
-            <DetailHourly data={weatherData}/>
-            <DetailForecast data={forecastData} />
-            <DetailSunsetRise data={sunstate}/>
-            <DetailRainmap data={loc} />
+            <DetailCurrentData city={city}/>
+            <DetailHourlyData city={city}/>
+            <DetailForecastData city={city}/>
+            <DetailSunsetRise city={city} data={sunstate}/>
+            <DetailRainmap city={city} data={loc} />
         </div>
     )
 }
