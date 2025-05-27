@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import DetailSunsetRise from "./detail-sunset-rise";
+import DetailRainmap from "./details-rainmap";
 
-function DetailSunData({ city }) {
+function DetailRainmapData({ city }) {
     const [weatherData, setWeatherData] = useState(null);
     const [error, setError] = useState(null);
 
@@ -26,9 +26,8 @@ function DetailSunData({ city }) {
 
     if (error) return <p>{error}</p>;
     if (!weatherData) return <p>Lade Wetterdaten…</p>;
-    console.log(weatherData);
 
-    return <DetailSunsetRise data={weatherData}/>;
+    return <DetailRainmap data={weatherData}/>;
 }
 
-export default DetailSunData;
+export default DetailRainmapData;

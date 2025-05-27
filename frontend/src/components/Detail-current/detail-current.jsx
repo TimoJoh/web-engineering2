@@ -8,6 +8,7 @@ const DetailCurrent = ({data}) => {
     const {
         city,
         temperature,
+        formattedTime,
         condition,
         feelsLike,
         humidity,
@@ -36,7 +37,7 @@ const DetailCurrent = ({data}) => {
             <div className="heading">
                 <div className="data">
                     <h1>{capitalizeFirstLetter(city)}</h1>
-                    <p>18:00</p>
+                    <p>{formattedTime}</p>
                 </div>
                 <div className="add">
                     <button>

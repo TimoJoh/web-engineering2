@@ -10,7 +10,7 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 import {Clock} from "lucide-react";
-import {getWeatherIcon, getWeatherIconDayOnly} from "../Icon-fetch/icon-fetch";
+import {getWeatherIcon} from "../Icon-fetch/icon-fetch";
 
 
 const generateColorStops = (temperatures, tempColorMap) => {
@@ -166,7 +166,7 @@ const HighlightDot = ({ cx, cy, index, maxIndex, minIndex }) => {
     return null;
 };
 
-const DetailHourly = ({apiData, sunTimes}) => {
+const DetailHourly = ({apiData, current}) => {
 
     if (!apiData || !apiData.list) {
         return <div>Loading...</div>;
@@ -175,10 +175,10 @@ const DetailHourly = ({apiData, sunTimes}) => {
     const data = apiData.list.slice(0,24).map((entry) => {
         console.log(entry);
         return {
-            hour: entry.dt.split(":")[0],
+            hour: entry.formattedTime.split(":")[0],
             temperature: entry.main.temp,
             precipitation: entry.rain?.["1h"] ?? 0,
-            condition: getWeatherIconDayOnly(entry.weather?.[0]?.description)
+            condition: getWeatherIcon(entry.weather?.[0]?.description, entry.formattedTime, current.sunrise, current.sunset),
         };
     });
 

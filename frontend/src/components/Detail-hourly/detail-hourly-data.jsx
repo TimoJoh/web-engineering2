@@ -37,6 +37,7 @@ function DetailHourlyData({ city }) {
 
     if (error) return <p>{error}</p>;
     if (!weatherData) return <p>Lade Wetterdaten…</p>;
+    if (!currentData) return <p>Lade Sonnendaten...</p>;
 
     return <DetailHourly apiData={weatherData} current={currentData}/>;
 }

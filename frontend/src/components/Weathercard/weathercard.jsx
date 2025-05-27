@@ -46,7 +46,7 @@ const Weathercard = ({ data, forecast }) => {
                 {forecast?.list?.slice(0, 5).map((day, index) => {
                     const condition = day.weather[0].description;
                     const forecastIconSrc = getWeatherIconDayOnly(condition);
-                    const weekday = day.weekday;
+                    const weekday = day.weekday.slice(0, 3);
 
                     return(
                         <ul key={index}>

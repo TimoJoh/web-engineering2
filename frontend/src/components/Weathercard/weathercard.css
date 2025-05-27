@@ -37,6 +37,7 @@
 .today img{
     width: 45%;
     height: auto;
+    margin-bottom: 0.1rem;
 }
 
 .today-temp {
@@ -77,8 +78,8 @@
 }
 
 .forecast img{
-    width: 50px;
-    height: auto;
+    width: auto;
+    height: 50px;
     margin: 0.5rem 0;
 }
 

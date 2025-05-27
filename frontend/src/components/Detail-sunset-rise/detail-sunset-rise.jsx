@@ -7,15 +7,18 @@ const DetailSunsetRise = ({data}) => {
     const [isDay, setIsDay] = useState(true);
 
     const {
+        formattedTime,
         sunrise,
         sunset
     } = data
 
     useEffect(() => {
         const updatePosition = () => {
+            const [hours, minutes] = formattedTime.split(':').map(Number);
             const now = new Date();
-            const today = now.toISOString().split("T")[0];
+            now.setHours(hours, minutes, 0, 0);
 
+            const today = now.toISOString().split("T")[0];
             const sunriseTime = new Date(`${today}T${sunrise}:00`);
             const sunsetTime = new Date(`${today}T${sunset}:00`);
 
@@ -56,7 +59,7 @@ const DetailSunsetRise = ({data}) => {
         updatePosition();
         const interval = setInterval(updatePosition, 60 * 1000);
         return () => clearInterval(interval);
-    }, [sunrise, sunset]);
+    }, [formattedTime, sunrise, sunset]);
 
     const celestialStyle = {
         transform: `rotate(${angle}deg) translateX(-165.525px) rotate(-${angle}deg) translate(-50%, -50%)`
