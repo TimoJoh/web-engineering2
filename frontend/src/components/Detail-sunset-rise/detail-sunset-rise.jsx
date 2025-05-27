@@ -62,7 +62,7 @@ const DetailSunsetRise = ({data}) => {
     }, [formattedTime, sunrise, sunset]);
 
     const celestialStyle = {
-        transform: `rotate(${angle}deg) translateX(-165.525px) rotate(-${angle}deg) translate(-50%, -50%)`
+        transform: `rotate(${angle}deg) translateX(-162.525px) rotate(-${angle}deg) translate(-50%, -50%)`
     };
 
     return (
