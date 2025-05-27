@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import com.weatherApp.service.LocationService;
 
-@Controller
+@RestController
 @RequestMapping("/api/location")
 public class LocationController {
 

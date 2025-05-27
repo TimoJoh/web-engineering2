@@ -12,11 +12,23 @@ const LocationPage = () => {
                     setCoordinates(`Geokoordinaten: ${latitude}, ${longitude}`);
 
                     // an Spring Boot API senden
-                    fetch('http://localhost:8080/api/location/save', { // Host und Port vom Backend prüfen
+                    fetch('http://localhost:8080/api/location/save', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ latitude, longitude }),
-                    }).then(res => res.text()).then(console.log);
+                    })
+                        .then(res => res.text())
+                        .then(console.log)
+                        .then(() => {
+                            // Wetterdaten vom Backend holen
+                            fetch(`http://localhost:8080/api/weather/current?latitude=${latitude}&longitude=${longitude}`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    console.log("Wetterdaten:", data);
+                                    // Optional: setze hier einen State, um die Daten anzuzeigen
+                                });
+                        });
+
                 },
                 () => setCoordinates('Fehler beim Abrufen der Position.')
             );

@@ -27,10 +27,10 @@ const Weathercard = ({city, temperature, condition}) => (
         </div>
 
         <div className="forecast">
-            {forecastData.map((forecast) => (
-                <ul>
+            {forecastData.map((forecast, index) => (
+                <ul key={index}>
                     <li>
-                        <p className="forecast-day">Mon</p>
+                        <p className="forecast-day">{forecast.day}</p>
                         <img src={forecast.condition} alt=""/>
                         <div className="forecast-lh">
                             <p className="l">{forecast.low}°</p>
