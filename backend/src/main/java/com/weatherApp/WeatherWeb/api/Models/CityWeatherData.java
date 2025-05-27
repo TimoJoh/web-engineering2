@@ -53,6 +53,33 @@ public class CityWeatherData {
 
     private int timezone;
 
+    private double lon;
+
+    private double lat;
+
+    public void setSunset(String sunset) {
+        this.sunset = sunset;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public void setSunrise(String sunrise) {
+        this.sunrise = sunrise;
+    }
 
     /**
      * Default constructor for {@code CityWeatherData}.
@@ -74,12 +101,14 @@ public class CityWeatherData {
      * @param windSpeed   the wind speed
      * @param windDegree  the wind direction
      */
-    public CityWeatherData(String city, String temperature, String minTemperature,
+    public CityWeatherData(String city, double lon, double lat, String temperature, String minTemperature,
                            String maxTemperature, String condition,
                            String feelsLike, int pressure, int humidity,
                            long sunrise, long sunset, double windSpeed,
                            double windDegree, int timezone) {
         this.city = city;
+        this.lon = lon;
+        this.lat = lat;
         this.temperature = cutDigits(temperature);
         this.minTemperature = cutDigits(minTemperature);
         this.maxTemperature = cutDigits(maxTemperature);
