@@ -54,7 +54,17 @@ public class HourlyWeatherResponse {
     }
 
     public static class HourlyForcast {
-        private String dt;
+        private long dt;
+        private String formattedTime;
+
+        public String getFormattedTime() {
+            return formattedTime;
+        }
+
+        public void setFormattedTime(String formattedTime) {
+            this.formattedTime = formattedTime;
+        }
+
         private Main main;
         private List<Weather> weather;
         private Rain rain;
@@ -64,13 +74,12 @@ public class HourlyWeatherResponse {
         // No-Args-Konstruktor für Jackson
         public HourlyForcast() {}
 
-        public String getDt() {
+        public long getDt() {
             return dt;
         }
 
-        @JsonProperty("dt")
-        public void setDt(long unixTime) {
-            this.dt = convertUnixToTimeString(unixTime, 1000);
+        public void setDt(long dt) {
+            this.dt = dt;
         }
 
         public Main getMain() {

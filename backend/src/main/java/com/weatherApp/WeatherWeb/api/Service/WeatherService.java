@@ -82,9 +82,13 @@ public class WeatherService {
      */
     private String formatUnixTime(long unixSeconds) {
         Instant instant = Instant.ofEpochSecond(unixSeconds);
-        return DateTimeFormatter.ofPattern("HH:mm")
-                .withZone(ZoneId.of("Europe/Berlin")) // Specifies the local time zone
+        return DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.of("UTC"))
                 .format(instant);
+    }
+
+    private String applyOffset(long dt, long offset) {
+        double time = dt + offset;
+        return formatUnixTime((long) time);
     }
 
     /**
@@ -158,9 +162,19 @@ public class WeatherService {
                 null,
                 HourlyWeatherResponse.class
         );
+        HourlyWeatherResponse weatherResponse = response.getBody();
 
+        if (weatherResponse != null && weatherResponse.getCity() != null) {
+            int timezoneOffset = weatherResponse.getCity().getTimezone();
+
+            for (HourlyWeatherResponse.HourlyForcast forecast : weatherResponse.getList()) {
+                long timestamp = forecast.getDt();
+                String formatted = applyOffset(timestamp, timezoneOffset);
+                forecast.setFormattedTime(formatted);
+            }
+        }
         // Return the parsed hourly weather response
-        return response.getBody();
+        return weatherResponse;
     }
 
     public DailyWeatherResponse getDailyWeatherByCity(String cityName) {
