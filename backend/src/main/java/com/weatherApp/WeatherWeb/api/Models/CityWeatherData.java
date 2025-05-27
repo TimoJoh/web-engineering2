@@ -16,6 +16,26 @@ public class CityWeatherData {
     // The name of the city
     private String city;
 
+    private double dt;
+
+    private String fortmattedTime;
+
+    public String getFortmattedTime() {
+        return fortmattedTime;
+    }
+
+    public void setFortmattedTime(String fortmattedTime) {
+        this.fortmattedTime = fortmattedTime;
+    }
+
+    public double getDt() {
+        return dt;
+    }
+
+    public void setDt(double dt) {
+        this.dt = dt;
+    }
+
     // The current temperature as a formatted string (e.g., "20°C")
     private String temperature;
 
@@ -101,12 +121,14 @@ public class CityWeatherData {
      * @param windSpeed   the wind speed
      * @param windDegree  the wind direction
      */
-    public CityWeatherData(String city, double lon, double lat, String temperature, String minTemperature,
+    public CityWeatherData(String city, double dt, String fortmattedTime, double lon, double lat, String temperature, String minTemperature,
                            String maxTemperature, String condition,
                            String feelsLike, int pressure, int humidity,
                            long sunrise, long sunset, double windSpeed,
                            double windDegree, int timezone) {
         this.city = city;
+        this.dt = dt;
+        this.fortmattedTime = fortmattedTime;
         this.lon = lon;
         this.lat = lat;
         this.temperature = cutDigits(temperature);

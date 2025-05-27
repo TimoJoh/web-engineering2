@@ -107,6 +107,7 @@ public class WeatherService {
             JsonNode root = mapper.readTree(json);
 
             // Extract the relevant fields from the JSON response
+            long dt = root.path("dt").asLong();
             double lon = root.get("coord").path("lon").asDouble();
             double lat = root.get("coord").path("lat").asDouble();
             String temperature = root.get("main").path("temp").asText();
@@ -126,9 +127,10 @@ public class WeatherService {
 
             String condition = root.get("weather").get(0).path("description").asText();
             int timezone = root.path("timezone").asInt();
+            String formattedTime = applyOffset(dt, timezone);
 
             // Return a new CityWeatherData object containing the extracted data
-            return new CityWeatherData(city, lon, lat,temperature, minTemperatur,
+            return new CityWeatherData(city, dt, formattedTime, lon, lat,temperature, minTemperatur,
                     maxTemperatur, condition, feelsLike,
                     pressure, humidity, sunrise,
                     sunset, windSpeed, windDegree, timezone);
