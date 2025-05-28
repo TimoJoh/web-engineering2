@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import "./login.css";
+import {PersonOutline} from "react-ionicons";
 
 function Modal({ onClose }) {
     const [email, setEmail] = useState("");
@@ -76,6 +77,7 @@ export default function Login() {
 
     return (
         <>
+            <button className="icon-button" onClick={() => setIsOpen(true)}><PersonOutline/></button>
             <button className="open-button" onClick={() => setIsOpen(true)}>
                 Login
             </button>

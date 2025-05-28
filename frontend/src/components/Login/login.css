@@ -26,14 +26,17 @@
 }
 
 .modal h2 {
-    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 2rem;
     text-align: center;
+
 }
 
 /* Inputs and button */
 .modal form {
     display: flex;
     flex-direction: column;
+    padding: 0.5rem;
 }
 
 .modal input {
@@ -43,6 +46,7 @@
 }
 
 .modal button[type="submit"] {
+    margin-top: 0.5rem;
     padding: 0.5rem;
     font-size: 1rem;
     background-color: #2563eb;
@@ -58,6 +62,10 @@
 
 .modal button[type="submit"]:active{
     background-color: #133083;
+}
+
+.modal label{
+    margin-bottom: 0.25rem;
 }
 
 /* Close button */
@@ -81,6 +89,10 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
+}
+
+.close-button:hover, .close-button:active{
+    color: red;
 }
 
 .open-button:hover {
