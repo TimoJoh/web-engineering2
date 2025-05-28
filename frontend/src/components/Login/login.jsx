@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ReactDOM from "react-dom";
 import "./login.css";
-import {PersonOutline} from "react-ionicons";
+import { PersonOutline } from "react-ionicons";
 import Register from "../Register/register";
+import { UserContext } from "../../UserContext";
 
-function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
+function LoginModal({ onClose, onSwitchToRegister }) {
+    const { setFirstName } = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -12,21 +14,20 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const jsonData = {
-            email: email,
-            password: password
-        };
-
         try {
             const response = await fetch("http://localhost:8080/api/auth/login", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(jsonData),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    username: email,
+                    password: password,
+                }),
                 credentials: "include",
             });
 
             if (response.status === 302 || response.status === 200) {
-                // Nach erfolgreichem Login: Benutzerinfos holen
                 const userResponse = await fetch("http://localhost:8080/api/auth/me", {
                     method: "GET",
                     credentials: "include",
@@ -34,11 +35,10 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
 
                 if (userResponse.ok) {
                     const userData = await userResponse.json();
-                    onLoginSuccess(userData.firstName);
-                    console.log("Willkommen,", userData.firstName);
-                    console.log(userData)// Oder weiterverarbeiten
+                    setFirstName(userData.firstName);
+                    onClose(); // close modal
                 } else {
-                    onLoginSuccess(""); // Fallback, falls /me scheitert
+                    setFirstName("");
                 }
             } else {
                 setError("Login fehlgeschlagen. Bitte überprüfe deine Zugangsdaten.");
@@ -48,7 +48,6 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
             setError("Ein Fehler ist aufgetreten.");
         }
     };
-
 
     return ReactDOM.createPortal(
         <div className="modal-overlay">
@@ -61,7 +60,6 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
                     <label>Email</label>
                     <input
                         type="email"
-                        placeholder="Enter email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -69,7 +67,6 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
                     <label>Password</label>
                     <input
                         type="password"
-                        placeholder="Enter password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -88,15 +85,13 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
 
 function RegisterModal({ onClose, onSwitchToLogin }) {
     return ReactDOM.createPortal(
-        <>
-            <Register onClose={onClose} onSwitchToLogin={onSwitchToLogin}/>
-        </>,
+        <Register onClose={onClose} onSwitchToLogin={onSwitchToLogin} />,
         document.getElementById("modal-root")
     );
 }
 
 export default function Login() {
-    const [firstName, setFirstName] = useState("");
+    const { firstName, logout } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
@@ -109,32 +104,33 @@ export default function Login() {
         <>
             {firstName ? (
                 <>
-                    <button className="icon-button">
-                        <PersonOutline />
-                    </button>
-                    <button className="open-button">
-                        {firstName}
-                    </button>
+                    <div className="login-container2">
+                        <button className="icon-button2">
+                            <PersonOutline/>
+                        </button>
+                        <button className="open-button2">{firstName}</button>
+                    </div>
+                    <div>
+                        <button className="logout-button" onClick={logout}>
+                            Sign Out
+                        </button>
+                    </div>
                 </>
             ) : (
-                <>
+                <div className="login-container">
                     <button className="icon-button" onClick={() => setIsOpen(true)}>
                         <PersonOutline />
                     </button>
                     <button className="open-button" onClick={() => setIsOpen(true)}>
                         Login
                     </button>
-                </>
+                </div>
             )}
 
             {isOpen && !showRegister && (
                 <LoginModal
                     onClose={handleClose}
                     onSwitchToRegister={() => setShowRegister(true)}
-                    onLoginSuccess={(name) => {
-                        setFirstName(name);
-                        handleClose();
-                    }}
                 />
             )}
 
@@ -142,7 +138,8 @@ export default function Login() {
                 <RegisterModal
                     onClose={handleClose}
                     onSwitchToLogin={() => setShowRegister(false)}
-                />)}
+                />
+            )}
         </>
     );
 }

@@ -103,7 +103,7 @@ const Header = ({ onCitySelect }) => {
                 )}
             </div>
 
-            <div className="login-container">
+            <div >
                 <Login />
             </div>
         </section>
