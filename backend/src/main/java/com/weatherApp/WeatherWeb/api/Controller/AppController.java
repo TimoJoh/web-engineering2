@@ -3,8 +3,14 @@ package com.weatherApp.WeatherWeb.api.Controller;
 import com.weatherApp.WeatherWeb.api.Models.LoginRequest;
 import com.weatherApp.WeatherWeb.api.Models.User;
 import com.weatherApp.WeatherWeb.api.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -58,20 +64,26 @@ public class AppController {
         return "login";
     }
 
-    // ==== REST-Login ====
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/api/auth/login")
     @ResponseBody
-    public ResponseEntity<String> loginViaApi(@RequestBody LoginRequest request) {
-        User user = userRepo.findByEmail(request.getEmail());
-        if (user == null) {
-            return ResponseEntity.status(401).body("Benutzer existiert nicht");
-        }
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
+        try {
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(401).body("Falsches Passwort");
-        }
+            Authentication authentication = authenticationManager.authenticate(authToken);
 
-        return ResponseEntity.ok("Login erfolgreich");
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            httpRequest.getSession(true); // Session erzeugen
+
+            return ResponseEntity.ok("Login erfolgreich");
+        } catch (AuthenticationException ex) {
+            return ResponseEntity.status(401).body("Login fehlgeschlagen");
+        }
     }
+
 }
