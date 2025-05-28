@@ -17,7 +17,7 @@
     background-color: white;
     padding: 2rem 2rem 1.5rem 2rem  ;
     border-radius: 12px;
-    width: fit-content;
+    width: 25%;
     position: relative;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.3s ease-in-out;
@@ -112,7 +112,7 @@
 }
 
 .register{
-    width: 100%;
+    width: 94.5%;
     background-color: transparent;
     border: none;
     border-radius: 5px;
