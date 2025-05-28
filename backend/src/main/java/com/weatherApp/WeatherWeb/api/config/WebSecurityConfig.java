@@ -46,6 +46,12 @@ public class WebSecurityConfig {
                         "/h2-console/**",
                         "/api/auth/login",
                         "/swagger-ui/index.html",
+                        "/swagger-ui/swagger-ui.css",
+                        "/swagger-ui/swagger-ui-bundle.js",
+                        "/swagger-ui/**",
+                        "/v3/api-docs",
+                        "/swagger-resources/**",
+                        "/webjars/**",
                         "/**"
                 ).permitAll()
                 .anyRequest().authenticated()

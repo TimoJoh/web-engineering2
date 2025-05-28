@@ -3,8 +3,10 @@ package com.weatherApp.WeatherWeb.api.Controller;
 import com.weatherApp.WeatherWeb.api.Models.LoginRequest;
 import com.weatherApp.WeatherWeb.api.Models.User;
 import com.weatherApp.WeatherWeb.api.repository.UserRepository;
+import com.weatherApp.WeatherWeb.api.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping
@@ -63,6 +67,24 @@ public class AppController {
     public String showLoginForm() {
         return "login";
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nicht eingeloggt");
+        }
+
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        // Du kannst hier beliebige Infos zurückgeben
+        Map<String, String> userInfo = new HashMap<>();
+        userInfo.put("firstName", userDetails.getFirstName());
+        userInfo.put("email", userDetails.getUsername()); // optional
+        userInfo.put("lastName", userDetails.getLastName()); // optional
+
+        return ResponseEntity.ok(userInfo);
+    }
+
 
 
     @Autowired
