@@ -25,9 +25,20 @@ function LoginModal({ onClose, onSwitchToRegister }) {
                     password: password,
                 }),
                 credentials: "include",
+                redirect: "manual", // wichtig!
+
             });
 
-            if (response.status === 302 || response.status === 200) {
+            if (response.status === 302) {
+                // Spring Security redirectet => prüfen, wohin
+                const location = response.headers.get("Location");
+                if (location && location.includes("error")) {
+                    setError("Login failed. Bitte überprüfe die Zugangsdaten.");
+                    return;
+                }
+            }
+
+            if (response.ok) {
                 const userResponse = await fetch("http://localhost:8080/api/auth/me", {
                     method: "GET",
                     credentials: "include",
@@ -36,12 +47,12 @@ function LoginModal({ onClose, onSwitchToRegister }) {
                 if (userResponse.ok) {
                     const userData = await userResponse.json();
                     setFirstName(userData.firstName);
-                    onClose(); // close modal
+                    onClose();
                 } else {
                     setFirstName("");
                 }
             } else {
-                setError("Login fehlgeschlagen. Bitte überprüfe deine Zugangsdaten.");
+                setError("Login failed. Bitte überprüfe die Zugangsdaten.");
             }
         } catch (err) {
             console.error("Fehler beim Login:", err);
@@ -60,6 +71,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
                     <label>Email</label>
                     <input
                         type="email"
+                        placeholder="Enter email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -67,6 +79,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
                     <label>Password</label>
                     <input
                         type="password"
+                        placeholder="Enter password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required

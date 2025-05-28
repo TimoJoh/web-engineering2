@@ -1,6 +1,8 @@
 package com.weatherApp.WeatherWeb.api.config;
 
 import com.weatherApp.WeatherWeb.api.Service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,10 +27,13 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

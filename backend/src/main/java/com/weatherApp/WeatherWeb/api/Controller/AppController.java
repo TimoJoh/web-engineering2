@@ -126,4 +126,16 @@ public class AppController {
         System.out.println("User: " + userInfo);
         return ResponseEntity.ok(userInfo);
     }
+
+    @PostMapping("/api/auth/logout")
+    @ResponseBody
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        try {
+            request.getSession(false).invalidate(); // Session invalidieren, wenn vorhanden
+            SecurityContextHolder.clearContext();   // Authentifizierungsdaten entfernen
+            return ResponseEntity.ok("Logout erfolgreich");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fehler beim Logout");
+        }
+    }
 }
