@@ -40,7 +40,7 @@ const DetailCurrent = ({data}) => {
                     <p>{formattedTime}</p>
                 </div>
                 <div className="add">
-                    <button>
+                    <button id="addCity">
                         +
                     </button>
                 </div>

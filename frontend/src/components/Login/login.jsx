@@ -4,7 +4,7 @@ import "./login.css";
 import {PersonOutline} from "react-ionicons";
 import Register from "../Register/register";
 
-function LoginModal({ onClose, onSwitchToRegister  }) {
+function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -29,8 +29,19 @@ function LoginModal({ onClose, onSwitchToRegister  }) {
             });
 
             if (response.status === 302 || response.status === 200) {
-                // Erfolgreicher Login
-                window.location.href = "/"; // oder z.B. /dashboard
+                // Nach erfolgreichem Login: Benutzerinfos holen
+                const userResponse = await fetch("http://localhost:8080/api/auth/me", {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    onLoginSuccess(userData.firstName);
+                    console.log("Willkommen,", userData.firstName); // Oder weiterverarbeiten
+                } else {
+                    onLoginSuccess(""); // Fallback, falls /me scheitert
+                }
             } else {
                 setError("Login fehlgeschlagen. Bitte überprüfe deine Zugangsdaten.");
             }
@@ -39,6 +50,7 @@ function LoginModal({ onClose, onSwitchToRegister  }) {
             setError("Ein Fehler ist aufgetreten.");
         }
     };
+
 
     return ReactDOM.createPortal(
         <div className="modal-overlay">
@@ -86,6 +98,7 @@ function RegisterModal({ onClose, onSwitchToLogin }) {
 }
 
 export default function Login() {
+    const [firstName, setFirstName] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
@@ -96,17 +109,34 @@ export default function Login() {
 
     return (
         <>
-            <button className="icon-button" onClick={() => setIsOpen(true)}>
-                <PersonOutline />
-            </button>
-            <button className="open-button" onClick={() => setIsOpen(true)}>
-                Login
-            </button>
+            {firstName ? (
+                <>
+                    <button className="icon-button">
+                        <PersonOutline />
+                    </button>
+                    <button className="open-button">
+                        {firstName}
+                    </button>
+                </>
+            ) : (
+                <>
+                    <button className="icon-button" onClick={() => setIsOpen(true)}>
+                        <PersonOutline />
+                    </button>
+                    <button className="open-button" onClick={() => setIsOpen(true)}>
+                        Login
+                    </button>
+                </>
+            )}
 
             {isOpen && !showRegister && (
                 <LoginModal
                     onClose={handleClose}
                     onSwitchToRegister={() => setShowRegister(true)}
+                    onLoginSuccess={(name) => {
+                        setFirstName(name);
+                        handleClose();
+                    }}
                 />
             )}
 
