@@ -36,23 +36,18 @@ public class WebSecurityConfig {
 
         http.authenticationProvider(authenticationProvider());
 
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/process_register", "/h2-console/**", "/api/**", "/swagger-ui/index.html").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .usernameParameter("email")
-                        .defaultSuccessUrl("/users", true)
-                        .permitAll()
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/",
+                        "/register",
+                        "/process_register",
+                        "/h2-console/**",
+                        "/api/auth/login",
+                        "/swagger-ui/index.html"
+                ).permitAll()
+                .anyRequest().authenticated()
+        )
 
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .permitAll()
-                )
                 .csrf(csrf -> csrf.disable()) // notwendig für H2-Konsole
                 .headers(headers -> headers
                         .frameOptions(frameOptions -> frameOptions.disable()) // neue Syntax

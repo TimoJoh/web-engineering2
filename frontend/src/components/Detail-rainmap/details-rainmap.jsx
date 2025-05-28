@@ -12,7 +12,7 @@ const DetailRainmap = ({data}) => {
                 <UmbrellaOutline height="18px" width="18px" color="#000000"/>
                 <h1>Precipitation</h1>
             </div>
-            <MapContainer center={[data.lat, data.lon]} zoom={8} scrollWheelZoom={false}>
+            <MapContainer center={[data.lat, data.lon]} zoom={9} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
