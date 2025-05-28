@@ -79,8 +79,8 @@ public class AppController {
         // Du kannst hier beliebige Infos zurückgeben
         Map<String, String> userInfo = new HashMap<>();
         userInfo.put("firstName", userDetails.getFirstName());
-        userInfo.put("email", userDetails.getUsername()); // optional
-        userInfo.put("lastName", userDetails.getLastName()); // optional
+        userInfo.put("email", userDetails.getUsername());
+        userInfo.put("lastName", userDetails.getLastName());
 
         return ResponseEntity.ok(userInfo);
     }
@@ -105,6 +105,22 @@ public class AppController {
             return ResponseEntity.ok("Login erfolgreich");
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(401).body("Login fehlgeschlagen");
+        }
+    }
+    @PostMapping("/api/auth/register")
+    @ResponseBody
+    public ResponseEntity<?> register(@RequestBody User user) {
+        try {
+            if (userRepo.existsByEmail(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Benutzer existiert bereits");
+            }
+
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepo.save(user);
+
+            return ResponseEntity.ok("Registrierung erfolgreich");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fehler bei der Registrierung");
         }
     }
 
