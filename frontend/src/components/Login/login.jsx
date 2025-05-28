@@ -20,12 +20,9 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
         try {
             const response = await fetch("http://localhost:8080/api/auth/login", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(jsonData),
-                credentials: "include", // sendet Session-Cookie mit
-                redirect: "manual" // verhindert automatisches Redirect
+                credentials: "include",
             });
 
             if (response.status === 302 || response.status === 200) {
@@ -38,7 +35,8 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
                 if (userResponse.ok) {
                     const userData = await userResponse.json();
                     onLoginSuccess(userData.firstName);
-                    console.log("Willkommen,", userData.firstName); // Oder weiterverarbeiten
+                    console.log("Willkommen,", userData.firstName);
+                    console.log(userData)// Oder weiterverarbeiten
                 } else {
                     onLoginSuccess(""); // Fallback, falls /me scheitert
                 }
