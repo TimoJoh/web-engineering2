@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import "./login.css";
 import {PersonOutline} from "react-ionicons";
+import Register from "../Register/register";
 
-function Modal({ onClose }) {
+function LoginModal({ onClose, onSwitchToRegister  }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -66,22 +67,54 @@ function Modal({ onClose }) {
                     <button type="submit">Login</button>
                     {error && <p className="error">{error}</p>}
                 </form>
+                <button className="register" onClick={onSwitchToRegister}>
+                    Register
+                </button>
             </div>
         </div>,
         document.getElementById("modal-root")
     );
 }
 
+function RegisterModal({ onClose, onSwitchToLogin }) {
+    return ReactDOM.createPortal(
+        <>
+            <Register onClose={onClose} onSwitchToLogin={onSwitchToLogin}/>
+        </>,
+        document.getElementById("modal-root")
+    );
+}
+
 export default function Login() {
     const [isOpen, setIsOpen] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
+
+    const handleClose = () => {
+        setIsOpen(false);
+        setShowRegister(false);
+    };
 
     return (
         <>
-            <button className="icon-button" onClick={() => setIsOpen(true)}><PersonOutline/></button>
+            <button className="icon-button" onClick={() => setIsOpen(true)}>
+                <PersonOutline />
+            </button>
             <button className="open-button" onClick={() => setIsOpen(true)}>
                 Login
             </button>
-            {isOpen && <Modal onClose={() => setIsOpen(false)} />}
+
+            {isOpen && !showRegister && (
+                <LoginModal
+                    onClose={handleClose}
+                    onSwitchToRegister={() => setShowRegister(true)}
+                />
+            )}
+
+            {isOpen && showRegister && (
+                <RegisterModal
+                onClose={handleClose}
+                onSwitchToLogin={() => setShowRegister(false)}
+            />)}
         </>
     );
 }

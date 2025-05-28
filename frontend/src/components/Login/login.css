@@ -15,7 +15,7 @@
 /* Modal box */
 .modal {
     background-color: white;
-    padding: 2rem;
+    padding: 2rem 2rem 1.5rem 2rem  ;
     border-radius: 12px;
     width: fit-content;
     position: relative;
@@ -109,4 +109,21 @@
         opacity: 1;
         transform: scale(1);
     }
+}
+
+.register{
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #2150DD;
+    align-self: center;
+    padding: 0.4rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.register:hover{
+    background-color: rgba(0 , 0 ,0 , 0.1);
 }
