@@ -89,95 +89,7 @@ function LoginModal({ onClose, onSwitchToRegister, onLoginSuccess  }) {
 }
 
 function RegisterModal({ onClose, onSwitchToLogin }) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
-
-    const handleRegister = async (e) => {
-        e.preventDefault();
-
-        const userData = {
-            email,
-            password,
-            firstName,
-            lastName
-        };
-
-        try {
-            const response = await fetch("http://localhost:8080/api/auth/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(userData),
-            });
-
-            if (response.ok) {
-                setSuccess("Registrierung erfolgreich! Du kannst dich jetzt einloggen.");
-                setTimeout(() => {
-                    onSwitchToLogin();
-                }, 1500);
-            } else {
-                const message = await response.text();
-                setError(message || "Registrierung fehlgeschlagen.");
-            }
-        } catch (err) {
-            console.error("Fehler bei der Registrierung:", err);
-            setError("Ein Fehler ist aufgetreten.");
-        }
-    };
-
     return ReactDOM.createPortal(
-        <div className="modal-overlay">
-            <div className="modal">
-                <button className="close-button" onClick={onClose}>
-                    &times;
-                </button>
-                <h2>Registrieren</h2>
-                <form onSubmit={handleRegister}>
-                    <label>Vorname</label>
-                    <input
-                        type="text"
-                        placeholder="Vorname"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
-                    />
-                    <label>Nachname</label>
-                    <input
-                        type="text"
-                        placeholder="Nachname"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        required
-                    />
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <label>Passwort</label>
-                    <input
-                        type="password"
-                        placeholderChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button type="submit">Registrieren</button>
-                    {error && <p className="error">{error}</p>}
-                    {success && <p className="success">{success}</p>}
-                </form>
-                <button className="register" onClick={onSwitchToLogin}>
-                    Bereits registriert? Login
-                </button>
-            </div>
-        </div>,
-        document.getElementById("modal-root")
         <>
             <Register onClose={onClose} onSwitchToLogin={onSwitchToLogin}/>
         </>,
@@ -230,9 +142,9 @@ export default function Login() {
 
             {isOpen && showRegister && (
                 <RegisterModal
-                onClose={handleClose}
-                onSwitchToLogin={() => setShowRegister(false)}
-            />)}
+                    onClose={handleClose}
+                    onSwitchToLogin={() => setShowRegister(false)}
+                />)}
         </>
     );
 }

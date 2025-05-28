@@ -68,22 +68,6 @@ public class AppController {
         return "login";
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
-        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nicht eingeloggt");
-        }
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        // Du kannst hier beliebige Infos zurückgeben
-        Map<String, String> userInfo = new HashMap<>();
-        userInfo.put("firstName", userDetails.getFirstName());
-        userInfo.put("email", userDetails.getUsername());
-        userInfo.put("lastName", userDetails.getLastName());
-
-        return ResponseEntity.ok(userInfo);
-    }
 
 
 
@@ -123,5 +107,23 @@ public class AppController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fehler bei der Registrierung");
         }
     }
+    @GetMapping("api/auth/me")
+    @ResponseBody
+    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            // Z.B. allgemeine Infos oder Dummy zurückgeben
+            Map<String, String> anonymousUser = new HashMap<>();
+            anonymousUser.put("status", "anonymous");
+            return ResponseEntity.ok(anonymousUser);
+        }
 
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        Map<String, String> userInfo = new HashMap<>();
+        userInfo.put("firstName", userDetails.getFirstName());
+        userInfo.put("email", userDetails.getUsername());
+        userInfo.put("lastName", userDetails.getLastName());
+        System.out.println("User: " + userInfo);
+        return ResponseEntity.ok(userInfo);
+    }
 }

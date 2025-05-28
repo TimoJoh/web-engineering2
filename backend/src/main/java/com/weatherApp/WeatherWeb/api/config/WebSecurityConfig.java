@@ -35,41 +35,31 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.authenticationProvider(authenticationProvider());
-
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/",
-                        "/register",
-                        "/process_register",
-                        "/h2-console/**",
-                        "/api/auth/login",
-                        "/swagger-ui/index.html",
-                        "/swagger-ui/swagger-ui.css",
-                        "/swagger-ui/swagger-ui-bundle.js",
-                        "/swagger-ui/**",
-                        "/v3/api-docs",
-                        "/swagger-resources/**",
-                        "/webjars/**",
-                        "/**"
-                ).permitAll()
-                .anyRequest().authenticated()
-        )
-                .formLogin(form -> form
-                        .usernameParameter("email")
-                        .defaultSuccessUrl("http://localhost:3000/weather", true)
-                        .permitAll()
+        http
+                .authenticationProvider(authenticationProvider())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/register",
+                                "/process_register",
+                                "/h2-console/**",
+                                "/api/auth/login",
+                                "/api/auth/register",
+                                "/api/auth/me",
+                                "/swagger-ui/**",
+                                "/v3/api-docs",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.permitAll()
-                        .logoutSuccessUrl("/")
-                                .permitAll()
-                        )
-
-                .csrf(csrf -> csrf.disable()) // notwendig für H2-Konsole
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable()) // neue Syntax
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
                 );
+        // CORS wird über separate CorsConfig gehandhabt
 
         return http.build();
     }
@@ -78,5 +68,4 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
 }
