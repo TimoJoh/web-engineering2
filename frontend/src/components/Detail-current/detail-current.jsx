@@ -3,6 +3,7 @@ import {Wind} from "lucide-react";
 import React from "react";
 import './detail-current.css';
 import {getWeatherIcon} from "../Icon-fetch/icon-fetch"
+import axios from "../../axiosInstance";
 
 const DetailCurrent = ({data}) => {
     const {
@@ -32,6 +33,26 @@ const DetailCurrent = ({data}) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
+    const AddCity = ({cityName, onCityAdded}) => {
+        const handleAddCity = (e) => {
+            e.preventDefault();
+
+            axios.post('/cities', {name: cityName})
+                .then(res => {
+                    console.log("City added:", res.data);
+                    if (onCityAdded) {
+                        onCityAdded(res.data);
+                    }
+                })
+                .catch(err => console.error("Fehler beim adden einer Stadt:", err));
+        };
+        return(
+            <button onClick={handleAddCity}>
+                +
+            </button>
+        )
+    }
+
     return (
         <div className="current">
             <div className="heading">
@@ -40,9 +61,7 @@ const DetailCurrent = ({data}) => {
                     <p>{formattedTime}</p>
                 </div>
                 <div className="add">
-                    <button id="addCity">
-                        +
-                    </button>
+                    <AddCity cityName={city} onCityAdded={(city) => console.log(city)}/>
                 </div>
             </div>
             <div className="current-temp">

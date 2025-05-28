@@ -6,7 +6,6 @@ import DetailHourlyData from "../Detail-hourly/detail-hourly-data";
 import DetailRainmapData from "../Detail-rainmap/details-rainmap-data";
 import DetailSunData from "../Detail-sunset-rise/detail-sunset-rise-data";
 
-const loc = {lat: 52.519, lon: 13.408};
 
 const Weatherdetail = ({city}) => {
     return (
