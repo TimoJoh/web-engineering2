@@ -43,7 +43,8 @@ public class WebSecurityConfig {
                         "/process_register",
                         "/h2-console/**",
                         "/api/auth/login",
-                        "/swagger-ui/index.html"
+                        "/swagger-ui/index.html",
+                        "/**"
                 ).permitAll()
                 .anyRequest().authenticated()
         )

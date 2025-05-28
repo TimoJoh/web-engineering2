@@ -1,0 +1,100 @@
+/* Background overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal box */
+.modal {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: fit-content;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+/* Inputs and button */
+.modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.modal button[type="submit"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.modal button[type="submit"]:hover {
+    background-color: #1d4ed8;
+}
+
+.modal button[type="submit"]:active{
+    background-color: #133083;
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+}
+
+/* Open button */
+.open-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.open-button:hover {
+    background-color: #1d4ed8;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
