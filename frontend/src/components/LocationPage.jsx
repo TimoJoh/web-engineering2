@@ -17,18 +17,18 @@ const LocationPage = () => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ latitude, longitude }),
                     })
-                        .then(res => res.text())
-                        .then(console.log)
-                        .then(() => {
-                            // Wetterdaten vom Backend holen
-                            fetch(`http://localhost:8080/api/weather/current?latitude=${latitude}&longitude=${longitude}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    console.log("Wetterdaten:", data);
-                                    // Optional: setze hier einen State, um die Daten anzuzeigen
-                                });
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP-Fehler: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(data => {
+                            console.log("API-Antwort:", data); // Bestätigung vom Backend
+                        })
+                        .catch(error => {
+                            console.error("Fehler beim Senden der Koordinaten:", error);
                         });
-
                 },
                 () => setCoordinates('Fehler beim Abrufen der Position.')
             );
