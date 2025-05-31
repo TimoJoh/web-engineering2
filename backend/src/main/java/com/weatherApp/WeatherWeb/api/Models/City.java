@@ -1,8 +1,10 @@
 package com.weatherApp.WeatherWeb.api.Models;
 
 import jakarta.persistence.*;
+import com.weatherApp.WeatherWeb.api.security.CustomUserDetails;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "name"})})
 public class City {
 
     @Id
@@ -11,13 +13,11 @@ public class City {
 
     private String name;
 
-    // Beziehung zum User (Besitzer)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     // Getter und Setter
-
     public Long getId() {
         return id;
     }

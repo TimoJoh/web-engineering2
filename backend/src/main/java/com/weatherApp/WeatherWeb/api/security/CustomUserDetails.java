@@ -34,6 +34,14 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;

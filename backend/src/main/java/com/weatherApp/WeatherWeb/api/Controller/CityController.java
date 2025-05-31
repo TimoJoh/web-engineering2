@@ -1,16 +1,19 @@
 package com.weatherApp.WeatherWeb.api.Controller;
 
 import com.weatherApp.WeatherWeb.api.Models.City;
+import com.weatherApp.WeatherWeb.api.Models.CityDto;
+import com.weatherApp.WeatherWeb.api.Service.CityService;
 import com.weatherApp.WeatherWeb.api.Models.User;
-import com.weatherApp.WeatherWeb.api.repository.CityRepository;
-import com.weatherApp.WeatherWeb.api.repository.UserRepository;
+import com.weatherApp.WeatherWeb.api.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -18,80 +21,69 @@ import java.util.stream.Collectors;
 public class CityController {
 
     @Autowired
-    private CityRepository cityRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    // DTO-Klasse für City (kann auch als eigene Datei ausgelagert werden)
-    public static class CityDto {
-        private Long id;
-        private String name;
-
-        public CityDto() {}
-
-        public CityDto(Long id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        // Getter und Setter
-        public Long getId() { return id; }
-        public void setId(Long id) { this.id = id; }
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-    }
+    private CityService cityService;
 
     // Alle Städte des aktuell eingeloggten Users abrufen
     @GetMapping
-    public ResponseEntity<List<CityDto>> getCities(Principal principal) {
-        User user = userRepository.findByEmail(principal.getName());
-        if (user == null) {
+    public ResponseEntity<List<CityDto>> getCities() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
 
-        List<CityDto> cities = cityRepository.findByUser(user)
-                .stream()
+        List<City> cities = cityService.getCitiesByUser(user);
+        List<CityDto> cityDtos = cities.stream()
                 .map(city -> new CityDto(city.getId(), city.getName()))
                 .collect(Collectors.toList());
-
-        return ResponseEntity.ok(cities);
+        return ResponseEntity.ok(cityDtos);
     }
 
     // Neue Stadt zum User hinzufügen
     @PostMapping
-    public ResponseEntity<CityDto> addCity(@RequestBody CityDto cityDto, Principal principal) {
-        User user = userRepository.findByEmail(principal.getName());
-        if (user == null) {
+    public ResponseEntity<CityDto> addCity(@RequestBody CityDto cityDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication.getPrincipal() instanceof CustomUserDetails)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
         City city = new City();
         city.setName(cityDto.getName());
         city.setUser(user);
 
-        city = cityRepository.save(city);
+        //Degug
 
-        CityDto responseDto = new CityDto(city.getId(), city.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        System.out.println("Aktueller Benutzer: " + user.getId() + " / " + user.getEmail());
+        city = cityService.saveCity(city);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CityDto(city.getId(), city.getName()));
     }
 
     // Stadt löschen (optional)
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCity(@PathVariable Long id, Principal principal) {
-        User user = userRepository.findByEmail(principal.getName());
-        if (user == null) {
+    public ResponseEntity<?> deleteCity(@PathVariable Long id) {
+        cityService.deleteCity(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteCity(@RequestParam String name) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication.getPrincipal() instanceof CustomUserDetails)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        City city = cityRepository.findById(id).orElse(null);
-        if (city == null || !city.getUser().getId().equals(user.getId())) {
-            // Stadt existiert nicht oder gehört nicht zum User
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+
+        Optional<City> cityOptional = cityService.findByUserIDAndCityName(user.getId(), name);
+        if (cityOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Stadt nicht gefunden");
         }
 
-        cityRepository.delete(city);
+        cityService.deleteCity(cityOptional.get().getId());
         return ResponseEntity.noContent().build();
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.weatherApp.WeatherWeb.api.config;
+package com.weatherApp.WeatherWeb.api.Config;
 
 import com.weatherApp.WeatherWeb.api.Service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,9 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import com.weatherApp.WeatherWeb.api.Config.CorsConfig;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class WebSecurityConfig {
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -39,8 +43,9 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authenticationProvider(authenticationProvider())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -56,6 +61,10 @@ public class WebSecurityConfig {
                                 "/v3/api-docs",
                                 "/swagger-resources/**",
                                 "/webjars/**",
+                                "/api/cities",
+                                "/api/cities/add",
+                                "/api/cities/**",
+                                "/api/cities/delete/**",
                                 "/**"
                         ).permitAll()
                         .anyRequest().authenticated()

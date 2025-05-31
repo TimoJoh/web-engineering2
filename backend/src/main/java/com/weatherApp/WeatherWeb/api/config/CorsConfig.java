@@ -1,4 +1,4 @@
-package com.weatherApp.WeatherWeb.api.config;
+package com.weatherApp.WeatherWeb.api.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ public class CorsConfig {
         // Ursprungsdomain(en) erlauben, hier React Devserver
         config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedHeaders(List.of("*", "Authorization"));
         config.setAllowCredentials(true); // Wichtig für Session-Cookies
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
