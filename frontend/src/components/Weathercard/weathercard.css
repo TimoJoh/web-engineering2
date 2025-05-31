@@ -23,6 +23,24 @@
     font-size: 1.5rem;
 }
 
+.trash {
+    margin-top: 0.75rem;
+    grid-area: trash;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 1.5rem;
+}
+
+.trash button{
+    background: rgb(255, 169, 169);
+    padding: 0.2rem 0.15rem 0.15rem 0.15rem;
+    border: none;
+    border-radius: 5px;
+    color: rgb(255, 0, 0);
+    cursor: pointer;
+}
+
 .today {
     grid-area: today;
     display: flex;

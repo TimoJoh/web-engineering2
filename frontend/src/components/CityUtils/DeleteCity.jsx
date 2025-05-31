@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { Trash } from 'lucide-react';
+
 
 const DeleteCityButton = ({ cityName, onCityDeleted }) => {
     const handleDeleteCity = async () => {
@@ -24,11 +26,12 @@ const DeleteCityButton = ({ cityName, onCityDeleted }) => {
         } catch (error) {
             console.error("Error deleting city:", error);
         }
+        window.location.replace("/");
     };
 
     return (
         <button onClick={handleDeleteCity}>
-            🗑{cityName}
+            <Trash />
         </button>
     );
 };

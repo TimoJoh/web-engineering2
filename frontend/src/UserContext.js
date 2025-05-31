@@ -25,6 +25,7 @@ export const UserProvider = ({ children }) => {
             credentials: "include",
         });
         setFirstName("");
+        window.location.reload()
     };
 
     return (

@@ -58,6 +58,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
             console.error("Fehler beim Login:", err);
             setError("Ein Fehler ist aufgetreten.");
         }
+        window.location.reload();
     };
 
     return ReactDOM.createPortal(

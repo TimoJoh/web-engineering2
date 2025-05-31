@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import WeathercardData from "../Weathercard/WeatherCardData";
+import {useNavigate} from "react-router-dom";
 
 const CityList = () => {
+    const navigate = useNavigate();
     const [cities, setCities] = useState([]);
     const [error, setError] = useState(null);
 
@@ -20,26 +23,37 @@ const CityList = () => {
             });
 
             console.log("Cities fetched:", response.data);
-            setCities(response.data);
+            if(response.data.length === 0) {
+                setCities([{ id: 0, name: "Friedrichshafen" }, { id: 1, name: "New York" }, { id: 2, name: "Tokyo" }]); // Fallback cities
+            } else {
+                setCities(response.data);
+            }
         } catch (err) {
             console.error("Error fetching cities:", err);
             setError("Städte konnten nicht geladen werden.");
+            setCities([{ id: 0, name: "Friedrichshafen" }, { id: 1, name: "New York" }, { id: 2, name: "Tokyo" }]); // Fallback cities
         }
     };
 
     useEffect(() => {
         fetchCities();
+        console.log(cities)
     }, []);
 
+    const handleClick = (city) => {
+        // Navigiere zur Weather-Seite mit dem Stadtnamen als URL-Parameter
+        navigate(`/weather/${city}`);
+    };
+
     return (
-        <div>
-            <h2>Meine Städte</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <ul>
-                {cities.map((city) => (
-                    <li key={city.id}>{city.name}</li>
-                ))}
-            </ul>
+        <div className="weatherdash">
+            {cities.map((data) => (
+            <div
+                key={data.id}
+                onClick={() => handleClick(data.name)}>
+                <WeathercardData city={data.name} />
+            </div>
+            ))}
         </div>
     );
 };

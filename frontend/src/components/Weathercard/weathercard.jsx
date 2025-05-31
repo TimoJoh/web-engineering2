@@ -1,6 +1,7 @@
 import React from "react";
 import "./weathercard.css";
 import {getWeatherIcon, getWeatherIconDayOnly} from "../Icon-fetch/icon-fetch"
+import DeleteCity from "../CityUtils/DeleteCity";
 
 const Weathercard = ({ data, forecast }) => {
     const {
@@ -25,6 +26,9 @@ const Weathercard = ({ data, forecast }) => {
         <div className="card">
             <div className="header">
                 <p>{city}</p>
+            </div>
+            <div className="trash">
+                <DeleteCity cityName={city} onCityDeleted={() => console.log(`${city} deleted`)}/>
             </div>
             <div className="today">
                 <img src={currentIconSrc} alt={condition} />
