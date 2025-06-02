@@ -36,7 +36,7 @@
     margin: 0;
 }
 
-.d-forecast ul:first-of-type {
+.d-forecast li:first-of-type {
     background: rgba(0, 0, 0, 0.05);
     border-radius: 10px;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./header.css";
-import {SearchOutline} from "react-ionicons";
+import {IoSearchOutline} from "react-icons/io5";
 import Logo from "../../assets/logo.png";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -65,7 +65,7 @@ const Header = ({ onCitySelect }) => {
             </div>
 
             <div className="search-container">
-                <SearchOutline />
+                <IoSearchOutline />
                 <input
                     type="text"
                     placeholder="Stadt eingeben"

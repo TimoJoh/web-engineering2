@@ -37,7 +37,6 @@ const CityList = () => {
 
     useEffect(() => {
         fetchCities();
-        console.log(cities)
     }, []);
 
     const handleClick = (city) => {

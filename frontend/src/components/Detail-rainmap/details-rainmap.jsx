@@ -1,7 +1,7 @@
 import React from 'react';
 import './details-rainmap.css';
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import { UmbrellaOutline } from 'react-ionicons'
+import { IoUmbrellaOutline } from 'react-icons/io5'
 
 
 const DetailRainmap = ({data}) => {
@@ -9,7 +9,7 @@ const DetailRainmap = ({data}) => {
     return (
         <div className="map-wrapper">
             <div className="rain-heading">
-                <UmbrellaOutline height="18px" width="18px" color="#000000"/>
+                <IoUmbrellaOutline fontSize="18px" color="#000000"/>
                 <h1>Precipitation</h1>
             </div>
             <MapContainer center={[data.lat, data.lon]} zoom={9} scrollWheelZoom={false}>

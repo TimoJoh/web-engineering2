@@ -258,7 +258,17 @@ const DetailHourly = ({apiData, current}) => {
                         strokeWidth={2}
                         fill="url(#tempGradient)"
                         fillOpacity={0.6}
-                        dot={(dotProps) => <HighlightDot {...dotProps} maxIndex={maxIndex} minIndex={minIndex} />}
+                        dot={(dotProps) => {
+                            const { key, ...rest } = dotProps;
+                            return (
+                                <HighlightDot
+                                    key={key}
+                                    {...rest}
+                                    maxIndex={maxIndex}
+                                    minIndex={minIndex}
+                                />
+                            );
+                        }}
                         activeDot={{fill: "white", stroke: "#454545"}}
                         name="Temperature (°C)"
                         baseValue="dataMin"

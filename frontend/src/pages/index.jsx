@@ -1,9 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import Header from "../components/Header/header";
-import axios from "../axiosInstance";
 import Footer from "../components/Footer/footer";
 import Weatherdash from "../components/Weatherdash/weatherdash";
-import {useNavigate} from "react-router-dom";
 
 
 const Index = () => {
@@ -13,7 +11,6 @@ const Index = () => {
         <>
             <Header onCitySelect={setSelectedCity}/>
             <Weatherdash />
-
             <Footer/>
         </>
     );

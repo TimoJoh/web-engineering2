@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import ReactDOM from "react-dom";
 import "./login.css";
-import { PersonOutline } from "react-ionicons";
+import { IoPersonOutline } from "react-icons/io5";
 import Register from "../Register/register";
 import { UserContext } from "../../UserContext";
 
@@ -120,7 +120,7 @@ export default function Login() {
                 <>
                     <div className="login-container2">
                         <button className="icon-button2">
-                            <PersonOutline/>
+                            <IoPersonOutline fontSize="22px"/>
                         </button>
                         <button className="open-button2">{firstName}</button>
                     </div>
@@ -133,7 +133,7 @@ export default function Login() {
             ) : (
                 <div className="login-container">
                     <button className="icon-button" onClick={() => setIsOpen(true)}>
-                        <PersonOutline />
+                        <IoPersonOutline fontSize="22px"/>
                     </button>
                     <button className="open-button" onClick={() => setIsOpen(true)}>
                         Login

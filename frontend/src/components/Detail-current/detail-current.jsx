@@ -1,4 +1,4 @@
-import {ThermometerOutline, WaterOutline} from "react-ionicons";
+import {IoThermometerOutline, IoWaterOutline} from "react-icons/io5";
 import {Wind} from "lucide-react";
 import React from "react";
 import './detail-current.css';
@@ -50,11 +50,11 @@ const DetailCurrent = ({data}) => {
             </div>
             <div className="infos">
                 <div className="info">
-                    <WaterOutline height="24px" width="24px"/>
+                    <IoWaterOutline fontSize="24px"/>
                     <p>{humidity}%</p>
                 </div>
                 <div className="info">
-                    <ThermometerOutline height="24px" width="24px"/>
+                    <IoThermometerOutline fontSize="24px"/>
                     <p>{feelsLike}°C</p>
                 </div>
                 <div className="info">
