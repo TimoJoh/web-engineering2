@@ -173,7 +173,7 @@
 .dropdown{
     position: absolute;
     top: calc(20px + 75px);
-    left: 0%;
+    left: 0;
     transform: translateX(-50%);
     animation: fadeSlideDown 0.3s ease forwards;
     width: 85vw;
