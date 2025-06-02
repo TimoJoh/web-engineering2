@@ -37,7 +37,7 @@ const Header = ({ onCitySelect }) => {
 
     // Close dropdown if window is resized to >=768
     useEffect(() => {
-        if (windowWidth >= 768) {
+        if (windowWidth >= 1024) {
             setDropdownOpen(false);
         }
     }, [windowWidth]);
@@ -90,7 +90,7 @@ const Header = ({ onCitySelect }) => {
 
     // Toggle dropdown open/close only on small screens
     const handleHeaderClick = () => {
-        if (windowWidth < 768) {
+        if (windowWidth < 1024) {
             setDropdownOpen((prev) => !prev);
         }
     };
@@ -107,7 +107,7 @@ const Header = ({ onCitySelect }) => {
                 className="header-section"
                 ref={headerRef}
                 onClick={handleHeaderClick}
-                style={{ cursor: windowWidth < 768 ? "pointer" : "default" }}
+                style={{ cursor: windowWidth < 1024 ? "pointer" : "default" }}
             >
                 <div>
                     <img
