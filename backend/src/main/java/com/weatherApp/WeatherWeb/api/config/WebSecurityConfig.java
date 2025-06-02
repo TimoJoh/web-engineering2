@@ -1,17 +1,25 @@
-package com.weatherApp.WeatherWeb.api.config;
+package com.weatherApp.WeatherWeb.api.Config;
 
 import com.weatherApp.WeatherWeb.api.Service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import com.weatherApp.WeatherWeb.api.Config.CorsConfig;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class WebSecurityConfig {
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -23,41 +31,71 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.authenticationProvider(authenticationProvider());
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .authenticationProvider(authenticationProvider())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/process_register", "/h2-console/**", "/api/**", "/swagger-ui/index.html").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/register",
+                                "/process_register",
+                                "/h2-console/**",
+                                "/api/auth/login",
+                                "/api/auth/register",
+                                "/api/auth/me",
+                                "/swagger-ui/**",
+                                "/v3/api-docs",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/api/cities",
+                                "/api/cities/add",
+                                "/api/cities/**",
+                                "/api/cities/delete/**",
+                                "/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .usernameParameter("email")
-                        .defaultSuccessUrl("/users", true)
+                        .loginProcessingUrl("/api/auth/login")
+                        .successHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
+                        .failureHandler((request, response, exception) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Invalid credentials\"}");
+                        })
                         .permitAll()
-
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/")
+                        .logoutUrl("/api/auth/logout")
                         .permitAll()
                 )
-                .csrf(csrf -> csrf.disable()) // notwendig für H2-Konsole
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable()) // neue Syntax
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
                 );
+        // CORS wird über separate CorsConfig gehandhabt
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 }

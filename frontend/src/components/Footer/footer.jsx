@@ -7,7 +7,7 @@ const Footer = () => {
     <section className="footer-section">
       <div>
           <p className="year">2025</p>
-          <p className="author">Timo Johannsen | Benjamin Peiter | Omer Butt</p>
+          <p className="author">Wetterfrosch</p>
       </div>
     </section>
   );

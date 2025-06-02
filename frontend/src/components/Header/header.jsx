@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./header.css";
-import {PersonOutline, SearchOutline} from "react-ionicons";
+import {SearchOutline} from "react-ionicons";
 import Logo from "../../assets/logo.png";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import Login from "../Login/login";
 
 const Header = ({ onCitySelect }) => {
     const navigate = useNavigate();
@@ -102,9 +103,8 @@ const Header = ({ onCitySelect }) => {
                 )}
             </div>
 
-            <div className="login-container">
-                <PersonOutline />
-                <button>Login</button>
+            <div >
+                <Login />
             </div>
         </section>
     );

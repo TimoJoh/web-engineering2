@@ -12,7 +12,7 @@
     grid-template-columns: 1.5fr 1fr;
     grid-template-rows: auto auto auto auto;
     grid-template-areas:
-    "header today"
+    "header trash"
     "today-temp today"
     "lh today"
     "forecast forecast";
@@ -21,6 +21,24 @@
     grid-area: header;
     margin: 1.5rem 0 0 1.5rem;
     font-size: 1.5rem;
+}
+
+.trash {
+    margin-top: 0.75rem;
+    grid-area: trash;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 1.5rem;
+}
+
+.trash button{
+    background: rgb(255, 169, 169);
+    padding: 0.2rem 0.15rem 0.15rem 0.15rem;
+    border: none;
+    border-radius: 5px;
+    color: rgb(255, 0, 0);
+    cursor: pointer;
 }
 
 .today {
@@ -32,12 +50,12 @@
     gap: 1rem;
     margin-right: 1.5rem;
     font-size: 1.1rem;
+    margin-bottom: 1rem;
 }
 
 .today img{
-    width: 45%;
-    height: auto;
-    margin-bottom: 0.1rem;
+    width: auto;
+    height: 100%;
 }
 
 .today-temp {

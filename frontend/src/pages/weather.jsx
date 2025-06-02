@@ -13,7 +13,7 @@ const Weather = () => {
         <>
             <Header onCitySelect={setSelectedCity}/>
             <Weatherdetail city={selectedCity}/>
-            {/*<Footer/>*/}
+            <Footer/>
         </>
     );
 };

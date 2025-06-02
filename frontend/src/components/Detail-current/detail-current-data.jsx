@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DetailCurrent from "./detail-current";
+import Loader from "../Loader/loader";
 
 function DetailCurrentData({ city }) {
     const [weatherData, setWeatherData] = useState(null);
@@ -25,7 +26,7 @@ function DetailCurrentData({ city }) {
 
 
     if (error) return <p>{error}</p>;
-    if (!weatherData) return <p>Lade Wetterdaten…</p>;
+    if (!weatherData) return <Loader />;
 
     return <DetailCurrent data={weatherData}/>;
 }

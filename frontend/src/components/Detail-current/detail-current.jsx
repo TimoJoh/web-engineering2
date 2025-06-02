@@ -3,6 +3,7 @@ import {Wind} from "lucide-react";
 import React from "react";
 import './detail-current.css';
 import {getWeatherIcon} from "../Icon-fetch/icon-fetch"
+import AddCityButton from "../CityUtils/AddCityButton";
 
 const DetailCurrent = ({data}) => {
     const {
@@ -40,9 +41,7 @@ const DetailCurrent = ({data}) => {
                     <p>{formattedTime}</p>
                 </div>
                 <div className="add">
-                    <button>
-                        +
-                    </button>
+                    <AddCityButton cityName={city} onCityAdded={() => console.log(`${city} added`)}/>
                 </div>
             </div>
             <div className="current-temp">

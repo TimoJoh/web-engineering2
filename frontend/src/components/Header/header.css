@@ -47,7 +47,8 @@
     color: #000000;
 }
 
-.header-section button {
+.header-section .open-button,
+.header-section .icon-button  {
     background: rgba(0, 0, 0, 0);
     border: none;
     outline: none;
@@ -59,12 +60,33 @@
     cursor: pointer;
 }
 
-.header-section button:hover {
-    background: rgba(0, 0, 0, 0.1);
+.header-section .open-button2,
+.header-section .icon-button2  {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    padding: 0.25rem;
+    border-radius: 0.3rem;
+    margin-left: 0.2rem;
+    color: #000000;
+    font-size: 1.1rem;
+    cursor: default;
 }
 
-.header-section button:active {
-    background: rgba(0, 0, 0, 0.2);
+.header-section .icon-button{
+    margin: 0;
+    padding: 0;
+    align-self: center;
+    height: 24px;
+    width: 22px;
+}
+
+.header-section .icon-button2{
+    margin: 0;
+    padding: 0;
+    align-self: center;
+    height: 24px;
+    width: 22px;
 }
 
 .search-container {
@@ -130,4 +152,9 @@
 
 .login-container button:hover, button:active {
     background: rgba(0, 0, 0, 0);
+}
+
+.login-container2{
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
 }

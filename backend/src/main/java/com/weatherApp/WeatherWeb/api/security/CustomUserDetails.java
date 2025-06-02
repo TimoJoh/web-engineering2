@@ -34,6 +34,14 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
@@ -52,5 +60,15 @@ public class CustomUserDetails implements UserDetails {
     public String getFullName() {
         return user.getFirstName() + " " + user.getLastName();
     }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
+
 
 }

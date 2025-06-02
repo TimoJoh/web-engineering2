@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DetailHourly from "./detail-hourly";
+import Loader from "../Loader/loader";
 
 function DetailHourlyData({ city }) {
     const [weatherData, setWeatherData] = useState(null);
@@ -36,8 +37,8 @@ function DetailHourlyData({ city }) {
 
 
     if (error) return <p>{error}</p>;
-    if (!weatherData) return <p>Lade Wetterdaten…</p>;
-    if (!currentData) return <p>Lade Sonnendaten...</p>;
+    if (!weatherData) return <Loader/>;
+    if (!currentData) return <Loader/>;
 
     return <DetailHourly apiData={weatherData} current={currentData}/>;
 }

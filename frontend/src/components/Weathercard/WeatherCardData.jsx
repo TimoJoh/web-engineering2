@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Weathercard from "./weathercard";
+import Loader from "../Loader/loader";
 
 function WeathercardData({ city }) {
     const [weatherData, setWeatherData] = useState(null);
@@ -30,7 +31,7 @@ function WeathercardData({ city }) {
 
 
     if (error) return <p>{error}</p>;
-    if (!weatherData) return <p>Lade Wetterdaten…</p>;
+    if (!weatherData) return <Loader/>;
 
     return <Weathercard data={weatherData} forecast={forecastData} />;
 }
