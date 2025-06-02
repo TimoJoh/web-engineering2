@@ -47,14 +47,15 @@ const Weathercard = ({ data, forecast }) => {
             </div>
 
             <div className="forecast">
+                <ul>
                 {forecast?.list?.slice(0, 5).map((day, index) => {
                     const condition = day.weather[0].description;
                     const forecastIconSrc = getWeatherIconDayOnly(condition);
                     const weekday = day.weekday.slice(0, 3);
 
                     return(
-                        <ul key={index}>
-                            <li>
+
+                            <li key={index}>
                                 <p className="forecast-day">{weekday}</p>
                                 <img
                                     src={forecastIconSrc}
@@ -65,9 +66,10 @@ const Weathercard = ({ data, forecast }) => {
                                     <p className="h">{Math.round(day.temp.max)}°</p>
                                 </div>
                             </li>
-                        </ul>
+
                         );
                 })}
+                </ul>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@
     grid-area: rain;
     width: auto;
     height: auto;
+    min-height: 400px;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);

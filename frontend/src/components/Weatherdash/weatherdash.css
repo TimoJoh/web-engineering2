@@ -17,3 +17,15 @@
     position: absolute;
     z-index: 999;
 }
+
+@media screen and (max-width: 1024px) {
+    .weatherdash {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+        column-gap: 0.5rem;
+    }
+
+    .weatherdash > :nth-last-child(1):nth-child(odd) {
+        grid-column: span 1;
+    }
+}

@@ -25,12 +25,13 @@
     margin-bottom: 1rem;
 }
 
-.hourly svg.gradient-layer {
-    position: absolute;
-    top: 40px;
-    left: 0;
-    width: 100%;
-    height: 210px; /* chart height */
-    z-index: 0;
-    pointer-events: none;
+@media screen and (max-width: 1024px) {
+    .hourly {
+        padding: 0.5rem;
+    }
+
+    .hourly-heading{
+        margin: 1.5rem 1.5rem 0 1.5rem;
+    }
+
 }

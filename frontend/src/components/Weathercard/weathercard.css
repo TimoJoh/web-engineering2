@@ -74,8 +74,6 @@
 }
 
 .forecast {
-    display: flex;
-    justify-content: space-between;
     grid-area: forecast;
     margin: 1rem 1.5rem 1.5rem 1.5rem;
 }
@@ -84,6 +82,9 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex; /* Add this line */
+    gap: 2rem;
+    justify-content: space-evenly; /* Center the items */
 }
 
 .forecast li{
@@ -110,4 +111,30 @@
 
 .forecast .l{
     color: #353535;
+}
+
+@media screen and (max-width: 1024px) {
+    .card{
+        width: 90vw;
+        height: auto;
+    }
+
+    .forecast ul{
+        gap: 1rem;
+    }
+
+    .forecast .forecast-day{
+        font-size: 1rem;
+        font-weight: 400;
+    }
+
+    .forecast .forecast-lh{
+        font-size: 0.8rem;
+    }
+
+    .forecast img{
+        width: auto;
+        height: 35px;
+        margin: 0.5rem 0;
+    }
 }

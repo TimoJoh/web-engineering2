@@ -148,4 +148,23 @@
     background-color: #ff4040;
 }
 
+@media screen and (max-width: 768px) {
+    .modal {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .modal h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal input, .modal button[type="submit"] {
+        font-size: 0.9rem;
+    }
+
+    .open-button {
+        width: 100%;
+        padding: 0.5rem;
+    }
+}
 
