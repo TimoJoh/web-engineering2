@@ -78,18 +78,11 @@
     font-weight: 600;
 }
 
-.sun {
-    width: 24px;
-    height: 24px;
+.celestial-wrapper {
     position: absolute;
     left: 50%;
     top: 50%;
-    transition: transform 1s ease;
     z-index: 2;
-}
-
-.celestial-wrapper {
-    z-index: 1;
     border-radius: 50%;
     background-color: white;
     border: 2px solid #dbeafe;
@@ -101,11 +94,4 @@
     min-width: 24px;
     min-height: 24px;
     padding: 3px;
-}
-
-@media screen and (max-width: 1024px) {
-    .suns{
-        max-height: 388.58px;
-    }
-
 }

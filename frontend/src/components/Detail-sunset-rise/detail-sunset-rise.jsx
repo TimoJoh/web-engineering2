@@ -1,16 +1,32 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import './detail-sunset-rise.css';
 import {Sunrise, Sunset, Sun, Moon } from 'lucide-react';
 
 const DetailSunsetRise = ({data}) => {
     const [angle, setAngle] = useState(0);
     const [isDay, setIsDay] = useState(true);
+    const [height, setHeight] = useState(0);
 
     const {
         formattedTime,
         sunrise,
         sunset
     } = data
+
+    const offsetPosition = () => {
+        const sunsElement = document.querySelector('.circle');
+        if (!sunsElement) return null;
+
+        const offset = sunsElement.offsetHeight;
+        console.log(offset);
+        return setHeight(offset / 2);
+    };
+
+    useLayoutEffect(() => {
+        offsetPosition();
+        window.addEventListener('resize', offsetPosition);
+        return () => window.removeEventListener('resize', offsetPosition);
+    }, []);
 
     useEffect(() => {
         const updatePosition = () => {
@@ -54,6 +70,7 @@ const DetailSunsetRise = ({data}) => {
 
             setAngle(angle);
             setIsDay(isDay);
+            console.log(`Angle: ${angle}, Is Day: ${isDay}`);
         };
 
         updatePosition();
@@ -62,7 +79,7 @@ const DetailSunsetRise = ({data}) => {
     }, [formattedTime, sunrise, sunset]);
 
     const celestialStyle = {
-        transform: `rotate(${angle}deg) translateX(-162.525px) rotate(-${angle}deg) translate(-50%, -50%)`
+        transform: `rotate(${angle}deg) translateX(-${height}px) rotate(-${angle}deg) translate(-50%, -50%)`
     };
 
     return (
@@ -79,20 +96,15 @@ const DetailSunsetRise = ({data}) => {
                     <p className="time">{sunset}</p>
                 </div>
 
-                <div className="sun" style={celestialStyle}>
-                    <div className="celestial-wrapper">
-                        {isDay ? <Sun color="#ffa500" size={24}/> : <Moon color="#849AAA" size={24}/>}
-                    </div>
+                <div className="celestial-wrapper" style={celestialStyle}>
+                    {isDay ? <Sun color="#ffa500" size={24}/> : <Moon color="#849AAA" size={24}/>}
                 </div>
-
             </div>
+
             <div className="horizon-line"></div>
             <div className="horizon">
                 <p>HORIZON</p>
             </div>
-
-
-
         </div>
     )
 }

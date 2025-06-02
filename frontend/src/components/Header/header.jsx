@@ -24,17 +24,6 @@ const Header = ({ onCitySelect }) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Close dropdown if clicked outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (headerRef.current && !headerRef.current.contains(event.target)) {
-                setDropdownOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
     // Close dropdown if window is resized to >=768
     useEffect(() => {
         if (windowWidth >= 1024) {
@@ -214,7 +203,9 @@ const Header = ({ onCitySelect }) => {
                         )}
                     </div>
 
-                    <div onClick={(e) => e.stopPropagation()}>
+                    <div onClick={(e) => {
+                        e.stopPropagation();
+                    }}>
                         <Login />
                     </div>
                 </section>

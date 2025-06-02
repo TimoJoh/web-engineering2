@@ -63,7 +63,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
 
     return ReactDOM.createPortal(
         <div className="modal-overlay">
-            <div className="modal">
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
                 <button className="close-button" onClick={onClose}>
                     &times;
                 </button>
