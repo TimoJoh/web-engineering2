@@ -227,7 +227,7 @@ const DetailHourly = ({apiData, current}) => {
                         orientation="bottom"
                         tickLine={false}
                         xAxisId="bottom"
-                        interval={1}
+                        interval={2}
                     />
                     <YAxis yAxisId="left"
                            domain={[Math.round(minTemp) - 10, Math.round(maxTemp) + 5]}

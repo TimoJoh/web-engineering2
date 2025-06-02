@@ -119,6 +119,11 @@
         height: auto;
     }
 
+    .today img{
+        width: 75px;
+        height: auto;
+    }
+
     .forecast ul{
         gap: 1rem;
     }
