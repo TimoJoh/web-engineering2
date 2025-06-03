@@ -19,13 +19,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping
-@CrossOrigin(origins = "http://localhost:3000") // ggf. anpassen
+@CrossOrigin(origins = "http://localhost:3000")
+@Tag(name = "AppController", description = "Handles web views and basic authentication endpoints.")
 public class AppController {
 
     @Autowired
@@ -34,105 +44,84 @@ public class AppController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // ==== HTML-Ansichten ====
-
-    @GetMapping("")
-    public String viewHomePage() {
-        return "index";
-    }
-
-    @GetMapping("/register")
-    public String showRegistrationsForm(Model model) {
-        model.addAttribute("user", new User());
-        return "signup_form";
-    }
-
-    @PostMapping("/process_register")
-    public String processRegister(User user) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        userRepo.save(user);
-        System.out.println("User wurde angelegt");
-        return "register_success";
-    }
-
-    @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> listUsers = userRepo.findAll();
-        model.addAttribute("listUsers", listUsers);
-        return "users";
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "login";
-    }
-
-
-
+    // ===== REST API: Auth endpoints =====
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/api/auth/login")
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
+    @Operation(summary = "Authenticate user and create session")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful"),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
+    public ResponseEntity<?> login(
+            @RequestBody LoginRequest request,
+            HttpServletRequest httpRequest) {
         try {
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
 
             Authentication authentication = authenticationManager.authenticate(authToken);
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            httpRequest.getSession(true); // Session erzeugen
+            httpRequest.getSession(true); // Create session
 
             return ResponseEntity.ok("Login erfolgreich");
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(401).body("Login fehlgeschlagen");
         }
     }
+
     @PostMapping("/api/auth/register")
     @ResponseBody
+    @Operation(summary = "Register a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Registration successful"),
+            @ApiResponse(responseCode = "400", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
             if (userRepo.existsByEmail(user.getEmail())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Benutzer existiert bereits");
             }
-
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepo.save(user);
-
             return ResponseEntity.ok("Registrierung erfolgreich");
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fehler bei der Registrierung");
         }
     }
-    @GetMapping("api/auth/me")
+
+    @GetMapping("/api/auth/me")
     @ResponseBody
+    @Operation(summary = "Get current authenticated user info", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
-            // Z.B. allgemeine Infos oder Dummy zurückgeben
             Map<String, String> anonymousUser = new HashMap<>();
             anonymousUser.put("status", "anonymous");
             return ResponseEntity.ok(anonymousUser);
         }
-
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
         Map<String, String> userInfo = new HashMap<>();
         userInfo.put("firstName", userDetails.getFirstName());
         userInfo.put("email", userDetails.getUsername());
         userInfo.put("lastName", userDetails.getLastName());
-        System.out.println("User: " + userInfo);
         return ResponseEntity.ok(userInfo);
     }
 
     @PostMapping("/api/auth/logout")
     @ResponseBody
+    @Operation(summary = "Logout the current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Logout successful"),
+            @ApiResponse(responseCode = "500", description = "Logout failed")
+    })
     public ResponseEntity<?> logout(HttpServletRequest request) {
         try {
-            request.getSession(false).invalidate(); // Session invalidieren, wenn vorhanden
-            SecurityContextHolder.clearContext();   // Authentifizierungsdaten entfernen
+            request.getSession(false).invalidate(); // Invalidate session if exists
+            SecurityContextHolder.clearContext();   // Clear authentication context
             return ResponseEntity.ok("Logout erfolgreich");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fehler beim Logout");
