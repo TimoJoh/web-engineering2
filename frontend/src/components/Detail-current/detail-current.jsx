@@ -18,6 +18,7 @@ const DetailCurrent = ({data}) => {
         sunset
     } = data;
 
+    // Get current time -> to decide if Icon is day or night
     const now = new Date();
     const parseTime = (t) => {
         const [h, m] = t.split(':').map(Number);
@@ -28,6 +29,7 @@ const DetailCurrent = ({data}) => {
 
     const currentIconSrc = getWeatherIcon(condition, now, parseTime(sunrise), parseTime(sunset));
 
+    // Capitalize first letter of city name
     const capitalizeFirstLetter = (string) => {
         if (!string) return "";
         return string.charAt(0).toUpperCase() + string.slice(1);

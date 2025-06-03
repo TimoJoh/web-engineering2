@@ -13,6 +13,7 @@ const DetailSunsetRise = ({data}) => {
         sunset
     } = data
 
+    // calculate offset to set sun on correct path
     const offsetPosition = () => {
         const sunsElement = document.querySelector('.circle');
         if (!sunsElement) return null;
@@ -29,6 +30,7 @@ const DetailSunsetRise = ({data}) => {
     }, []);
 
     useEffect(() => {
+        // update position of sun according to time of city and sunrise sunset times
         const updatePosition = () => {
             const [hours, minutes] = formattedTime.split(':').map(Number);
             const now = new Date();
@@ -78,6 +80,7 @@ const DetailSunsetRise = ({data}) => {
         return () => clearInterval(interval);
     }, [formattedTime, sunrise, sunset]);
 
+    // style to change suns position
     const celestialStyle = {
         transform: `rotate(${angle}deg) translateX(-${height}px) rotate(-${angle}deg) translate(-50%, -50%)`
     };

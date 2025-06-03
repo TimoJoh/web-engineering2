@@ -13,6 +13,7 @@ import {Clock} from "lucide-react";
 import {getWeatherIcon} from "../Icon-fetch/icon-fetch";
 
 
+// Generate color stops for the temperature gradient
 const generateColorStops = (temperatures, tempColorMap) => {
     const maxTemp = Math.max(...temperatures);
     const minTemp = Math.min(...temperatures);
@@ -40,6 +41,7 @@ const generateColorStops = (temperatures, tempColorMap) => {
     return stops;
 };
 
+// Generate color stops for the line temperature gradient (offset different -> not starting on X-Axis)
 const generateColorStopsLine = (temperatures, tempColorMap) => {
     const maxTemp = Math.max(...temperatures);
     const minTemp = Math.min(...temperatures);
@@ -70,6 +72,7 @@ const generateColorStopsLine = (temperatures, tempColorMap) => {
     return stops;
 };
 
+// Custom tooltip for the graph
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
@@ -96,6 +99,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     return null;
 };
 
+// Custom tick with weather icons for top X-Axis
 const WeatherIconTick = ({ x, y, payload, data }) => {
     const entry = data.find(d => d.hour.toString() === payload.value.toString());
     if (!entry || !entry.condition) return null;
@@ -110,6 +114,7 @@ const WeatherIconTick = ({ x, y, payload, data }) => {
     );
 };
 
+// Custom dot for the temperature graph -> highlight high and low
 const HighlightDot = ({ cx, cy, index, maxIndex, minIndex }) => {
     if (cx === null || cy === null) return null;
 
@@ -212,6 +217,7 @@ const DetailHourly = ({apiData, current}) => {
                 <Clock size={18} color="#000000" strokeWidth="2.75px"/>
                 <h1>Hourly Forecast</h1>
             </div>
+            {/*Graph*/}
             <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0}}>
                     <XAxis
