@@ -1,4 +1,5 @@
-package com.weatherApp.WeatherWeb.api.Config;
+package com.weatherApp.WeatherWeb.api.config;
+
 
 import com.weatherApp.WeatherWeb.api.Service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import com.weatherApp.WeatherWeb.api.Config.CorsConfig;
+import com.weatherApp.WeatherWeb.api.config.CorsConfig;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration

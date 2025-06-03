@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/backend/WeatherWeb.iml" filepath="$PROJECT_DIR$/backend/WeatherWeb.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/WebEngineering2Programmentwurf.iml" filepath="$PROJECT_DIR$/.idea/WebEngineering2Programmentwurf.iml" />
     </modules>
   </component>
