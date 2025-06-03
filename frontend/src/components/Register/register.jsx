@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
+// register Modal
 export default function Register({ onClose, onSwitchToLogin }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -8,6 +9,7 @@ export default function Register({ onClose, onSwitchToLogin }) {
     const [lastName, setLastName] = useState("");
     const [error, setError] = useState("");
 
+    // Register
     const handleRegister = async (e) => {
         e.preventDefault();
 
@@ -40,6 +42,7 @@ export default function Register({ onClose, onSwitchToLogin }) {
         }
     };
 
+    // create Register Popup -> add to modal root to fill screen
     return ReactDOM.createPortal(
         <div className="modal-overlay">
             <div className="modal">

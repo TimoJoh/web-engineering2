@@ -5,12 +5,14 @@ import { IoPersonOutline } from "react-icons/io5";
 import Register from "../Register/register";
 import { UserContext } from "../../UserContext";
 
+// Login Modal
 function LoginModal({ onClose, onSwitchToRegister }) {
     const { setFirstName } = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    // Login
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -61,6 +63,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
         window.location.reload();
     };
 
+    // create Login Popup -> add to modal root to fill screen
     return ReactDOM.createPortal(
         <div className="modal-overlay">
             <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -97,6 +100,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
     );
 }
 
+// Register Modal
 function RegisterModal({ onClose, onSwitchToLogin }) {
     return ReactDOM.createPortal(
         <Register onClose={onClose} onSwitchToLogin={onSwitchToLogin} />,
@@ -104,6 +108,7 @@ function RegisterModal({ onClose, onSwitchToLogin }) {
     );
 }
 
+// Login Button
 export default function Login() {
     const { firstName, logout } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
@@ -117,6 +122,7 @@ export default function Login() {
     return (
         <>
             {firstName ? (
+                // if logged in show name and sign out
                 <>
                     <div className="login-container2">
                         <button className="icon-button2">
@@ -131,6 +137,7 @@ export default function Login() {
                     </div>
                 </>
             ) : (
+                // if not logged in
                 <div className="login-container">
                     <button className="icon-button" onClick={() => setIsOpen(true)}>
                         <IoPersonOutline fontSize="22px"/>
@@ -142,6 +149,7 @@ export default function Login() {
             )}
 
             {isOpen && !showRegister && (
+                // show login
                 <LoginModal
                     onClose={handleClose}
                     onSwitchToRegister={() => setShowRegister(true)}
@@ -149,6 +157,7 @@ export default function Login() {
             )}
 
             {isOpen && showRegister && (
+                // show register if user clicks on register button
                 <RegisterModal
                     onClose={handleClose}
                     onSwitchToLogin={() => setShowRegister(false)}

@@ -1,8 +1,11 @@
 import {weatherIconMap} from "./icon-mapper"
 
 export function getWeatherIcon(condition, currentTime, sunriseTime, sunsetTime) {
+
+    //calculate if it is day or night
     const isDay = currentTime >= sunriseTime && currentTime < sunsetTime;
 
+    // map weather conditions according to https://openweathermap.org/weather-conditions
     const map = {
         'clear sky': isDay ? 'clear-day' : 'clear-night',
         'sky is clear': isDay ? 'clear-day' : 'clear-night',  // neu hinzugefügt
@@ -40,6 +43,8 @@ export function getWeatherIcon(condition, currentTime, sunriseTime, sunsetTime) 
     return weatherIconMap[iconKey];
 }
 
+// map weather conditions according to https://openweathermap.org/weather-conditions
+// only for daytime
 export function getWeatherIconDayOnly(condition) {
     const map = {
         'clear sky': 'clear-day',

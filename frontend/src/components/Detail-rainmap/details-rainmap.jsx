@@ -13,10 +13,12 @@ const DetailRainmap = ({data}) => {
                 <h1>Precipitation</h1>
             </div>
             <MapContainer center={[data.lat, data.lon]} zoom={9} scrollWheelZoom={false}>
+                {/*import map from openstreetmap with leaflet*/}
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                {/*add rain layer from openweathermap api*/}
                 <TileLayer
                     attribution='Map data © <a href="https://openweathermap.org/">OpenWeatherMap</a>'
                     url={`http://maps.openweathermap.org/maps/2.0/weather/PA0/{z}/{x}/{y}?date=${data.dt}&appid=${openWeatherMapAPIKey}`}

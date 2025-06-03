@@ -18,6 +18,7 @@ import thunderstorms from '../../assets/weathericons/thunderstorms.svg';
 import tornado from '../../assets/weathericons/tornado.svg';
 import wind from '../../assets/weathericons/wind.svg';
 
+// Map weather conditions to icon path
 export const weatherIconMap = {
     'clear-day': clearDay,
     'clear-night': clearNight,

@@ -12,6 +12,7 @@ const Weathercard = ({ data, forecast }) => {
         sunset
     } = data;
 
+    // get current time -> to decide if Icon is day or night
     const now = new Date();
     const parseTime = (t) => {
         const [h, m] = t.split(':').map(Number);

@@ -45,6 +45,7 @@ const Header = ({ onCitySelect }) => {
         return () => clearTimeout(delayDebounce);
     }, [query, selected]);
 
+    // Fetch city/town/village suggestions from Photon API
     const fetchSuggestions = async (input) => {
         try {
             const response = await axios.get("https://photon.komoot.io/api/", {
@@ -68,6 +69,7 @@ const Header = ({ onCitySelect }) => {
         }
     };
 
+    // Handle city selection
     const handleSelectCity = (cityName) => {
         setQuery(cityName);
         setSelected(true);
@@ -98,6 +100,7 @@ const Header = ({ onCitySelect }) => {
                 onClick={handleHeaderClick}
                 style={{ cursor: windowWidth < 1024 ? "pointer" : "default" }}
             >
+                {/*Logo in header*/}
                 <div>
                     <img
                         src={Logo}
@@ -129,6 +132,7 @@ const Header = ({ onCitySelect }) => {
                                 onClick={(e) => e.stopPropagation()}
                             />
 
+                            {/*show search suggestion if inpupt is longer that 0 characters and there are results*/}
                             {results.length > 0 && (
                                 <ul className="autocomplete-dropdown" onClick={(e) => e.stopPropagation()}>
                                     {results.map((place) => {
@@ -150,6 +154,7 @@ const Header = ({ onCitySelect }) => {
                             )}
                         </div>
 
+                        {/*Login Button*/}
                         <div onClick={(e) => e.stopPropagation()}>
                             <Login />
                         </div>
