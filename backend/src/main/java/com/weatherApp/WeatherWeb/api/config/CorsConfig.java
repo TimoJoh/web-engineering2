@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Configuration class for setting up Cross-Origin Resource Sharing (CORS) policy.
- * <p>
+ *
  * This configuration enables controlled access to backend resources from different origins,
  * especially from frontend applications such as those running on a separate domain or port (e.g., React dev server).
  */

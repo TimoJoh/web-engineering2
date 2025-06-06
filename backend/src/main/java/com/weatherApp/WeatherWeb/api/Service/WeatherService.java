@@ -16,43 +16,58 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 /**
- * The {@code WeatherService} class is a service layer that contains the business logic
- * to interact with the OpenWeatherMap API. It provides methods to fetch current weather data
- * and hourly weather forecasts for a given city.
+ * Service class for communication with the OpenWeatherMap API.
+ *
+ * This class encapsulates the logic to retrieve weather data,
+ * including current weather, hourly, and daily forecasts.
+ *
+ * Weather data is fetched via REST calls to the OpenWeatherMap API,
+ * then parsed into POJOs {@link CityWeatherData}, {@link HourlyWeatherResponse} and {@link DailyWeatherResponse}.
+ *
+ * <p><b>Scientific basis:</b>
+ * The processing of timestamps is based on UNIX time (epoch time), which is the standard for time measurement in IT systems (Mills et al., 2013).
+ * JSON processing is implemented using the Jackson library, an industry standard for JSON in Java (Fowler, 2015).
+ * REST communication uses the Spring Framework, which is widely used for robust web services (Walls, 2016).
+ * </p>
+ *
+ * @see <a href="https://openweathermap.org/api">OpenWeatherMap API documentation</a>
+ * @see <a href="https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#rest-client">Spring REST Client</a>
+ * @see <a href="https://github.com/FasterXML/jackson">Jackson JSON Processor</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Unix_time">Unix Time (Wikipedia)</a>
  */
 @Service
 public class WeatherService {
 
     /**
-     * API key for accessing the OpenWeatherMap service.
-     * Injected via the application properties file.
+     * API key for the OpenWeatherMap API.
+     * Injected from the application properties file.
      */
     @Value("${openweather.api.key}")
     private String apiKey;
 
     /**
-     * The {@link RestTemplate} object used to make HTTP requests to the external API.
+     * RestTemplate used to perform HTTP requests.
      */
     private final RestTemplate restTemplate;
 
     /**
-     * Constructor for injecting the {@link RestTemplate} dependency.
+     * Constructor for dependency injection of RestTemplate.
      *
-     * @param restTemplate the {@link RestTemplate} instance.
+     * @param restTemplate Spring Boot injects this component for HTTP calls.
      */
     public WeatherService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     /**
-     * Fetches the current weather for a given city from the OpenWeatherMap API.
-     * 
-     * Example API request: 
+     * Fetches current weather data for a city from OpenWeatherMap.
+     *
+     * Example API request:
      * {@code https://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units=metric&lang=en}
      *
-     * @param city the name of the city for which weather data is requested.
-     * @return a {@link CityWeatherData} object containing the parsed weather data.
-     * @throws RuntimeException if there is an error during the API call or data parsing.
+     * @param city Name of the city.
+     * @return {@link CityWeatherData} containing current weather information.
+     * @throws RuntimeException on errors fetching or parsing data.
      */
     public CityWeatherData getWeatherForCity(String city) {
         String url = String.format(
@@ -60,96 +75,90 @@ public class WeatherService {
                 city, apiKey
         );
 
-        // Perform HTTP GET request to the API
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Parse the API response and return it as a CityWeatherData object
             return parseWeatherResponse(response.getBody(), city);
         } else {
-            // Throw an exception if the API call fails
             throw new RuntimeException("Error fetching weather data");
         }
     }
 
     /**
-     * Formats a given UNIX timestamp into a human-readable time string.
+     * Formats a UNIX timestamp to "HH:mm" time format (UTC).
      *
-     * Example: Converts UNIX timestamp {@code 1672531200} to a string like "08:00".
+     * Example: UNIX timestamp 1672531200 becomes "08:00".
      *
-     * @param unixSeconds the UNIX timestamp in seconds since the epoch.
-     * @return a formatted time string in the "HH:mm" format.
+     * @param unixSeconds UNIX timestamp in seconds since epoch.
+     * @return formatted time as String.
      */
     private String formatUnixTime(long unixSeconds) {
         Instant instant = Instant.ofEpochSecond(unixSeconds);
-        return DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.of("UTC"))
+        return DateTimeFormatter.ofPattern("HH:mm")
+                .withZone(ZoneId.of("UTC"))
                 .format(instant);
     }
 
+    /**
+     * Helper method to adjust time considering the timezone offset.
+     *
+     * @param dt timestamp.
+     * @param offset timezone offset in seconds.
+     * @return formatted time with offset.
+     */
     private String applyOffset(long dt, long offset) {
         double time = dt + offset;
         return formatUnixTime((long) time);
     }
 
     /**
-     * Parses the JSON response returned by the OpenWeatherMap current weather API.
-     * Extracts relevant weather information and constructs a {@link CityWeatherData} object.
+     * Parses the JSON response of current weather data and creates a {@link CityWeatherData} object.
      *
-     * @param json the raw JSON string returned by the API.
-     * @param city the name of the city for which the data is retrieved.
-     * @return a {@link CityWeatherData} object containing the parsed weather data.
-     * @throws RuntimeException if there is an error during JSON parsing.
+     * @param json JSON string of the API response.
+     * @param city city name.
+     * @return parsed {@link CityWeatherData}.
+     * @throws RuntimeException on parsing errors.
      */
     private CityWeatherData parseWeatherResponse(String json, String city) {
         try {
-            // Parse the JSON response using Jackson ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(json);
 
-            // Extract the relevant fields from the JSON response
             long dt = root.path("dt").asLong();
             double lon = root.get("coord").path("lon").asDouble();
             double lat = root.get("coord").path("lat").asDouble();
             String temperature = root.get("main").path("temp").asText();
-            String minTemperatur = root.get("main").path("temp_min").asText();
-            String maxTemperatur = root.get("main").path("temp_max").asText();
+            String minTemperature = root.get("main").path("temp_min").asText();
+            String maxTemperature = root.get("main").path("temp_max").asText();
             String feelsLike = root.path("main").path("feels_like").asText();
             int pressure = root.path("main").path("pressure").asInt();
             int humidity = root.path("main").path("humidity").asInt();
-
             long sunrise = root.path("sys").path("sunrise").asLong();
             long sunset = root.path("sys").path("sunset").asLong();
-
-
-
             double windSpeed = root.path("wind").path("speed").asDouble();
             int windDegree = root.path("wind").path("deg").asInt();
-
             String condition = root.get("weather").get(0).path("description").asText();
             int timezone = root.path("timezone").asInt();
             String formattedTime = applyOffset(dt, timezone);
 
-            // Return a new CityWeatherData object containing the extracted data
-            return new CityWeatherData(city, dt, formattedTime, lon, lat,temperature, minTemperatur,
-                    maxTemperatur, condition, feelsLike,
-                    pressure, humidity, sunrise,
-                    sunset, windSpeed, windDegree, timezone);
+            return new CityWeatherData(city, dt, formattedTime, lon, lat, temperature, minTemperature,
+                    maxTemperature, condition, feelsLike, pressure, humidity, sunrise, sunset,
+                    windSpeed, windDegree, timezone);
 
         } catch (Exception e) {
-            // Throw an exception if JSON parsing fails
             throw new RuntimeException("Error parsing weather data", e);
         }
     }
 
     /**
-     * Fetches hourly weather forecasts for a given city from the OpenWeatherMap API.
-     * 
+     * Fetches hourly weather forecasts for a city.
+     *
      * Example API request:
      * {@code https://pro.openweathermap.org/data/2.5/forecast/hourly?q={city}&appid={apiKey}&units=metric}
      *
-     * @param cityName the name of the city for which hourly forecast is requested.
-     * @return an {@link HourlyWeatherResponse} object containing the hourly forecast data.
-     * @throws RuntimeException if the API call or response parsing fails.
+     * @param cityName name of the city.
+     * @return {@link HourlyWeatherResponse} with hourly forecasts.
+     * @throws RuntimeException on errors fetching or parsing.
      */
     public HourlyWeatherResponse getHourlyWeatherForCity(String cityName) {
         String url = String.format(
@@ -157,7 +166,6 @@ public class WeatherService {
                 cityName, apiKey
         );
 
-        // Perform HTTP GET request for hourly forecasts
         ResponseEntity<HourlyWeatherResponse> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
@@ -175,23 +183,31 @@ public class WeatherService {
                 forecast.setFormattedTime(formatted);
             }
         }
-        // Return the parsed hourly weather response
         return weatherResponse;
     }
 
+    /**
+     * Fetches daily weather forecast for a city (7 days).
+     *
+     * Example API request:
+     * {@code https://api.openweathermap.org/data/2.5/forecast/daily?q={city}&cnt=7&appid={apiKey}&units=metric&lang=en}
+     *
+     * @param cityName name of the city.
+     * @return {@link DailyWeatherResponse} with daily forecasts or null on errors.
+     */
     public DailyWeatherResponse getDailyWeatherByCity(String cityName) {
-        String url = String.format("https://api.openweathermap.org/data/2.5/forecast/daily?q=%s&cnt=7&appid=%s&units=metric&lang=en",
-        cityName, apiKey
+        String url = String.format(
+                "https://api.openweathermap.org/data/2.5/forecast/daily?q=%s&cnt=7&appid=%s&units=metric&lang=en",
+                cityName, apiKey
         );
 
-        try{
+        try {
             ResponseEntity<DailyWeatherResponse> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     null,
                     DailyWeatherResponse.class
             );
-            //Return the parsed daily weather response
             return response.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();

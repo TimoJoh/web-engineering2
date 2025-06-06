@@ -13,73 +13,82 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST-Controller zur Bereitstellung von Wetterdaten via API.
+ * REST controller that provides endpoints for retrieving weather information
+ * (current, hourly, and daily forecasts) for a specified city.
  */
 @RestController
 @RequestMapping("/api")
-@Tag(name = "Weather API", description = "Stellt Wetterinformationen bereit: aktuell, stündlich, täglich")
+@Tag(name = "Weather API", description = "Provides weather information: current, hourly, and daily forecasts.")
 public class WeatherAPIController {
 
     private final WeatherService weatherService;
 
+    // Constructor-based dependency injection
     public WeatherAPIController(WeatherService weatherService) {
         this.weatherService = weatherService;
     }
 
     /**
-     * Gibt die aktuellen Wetterdaten für eine Stadt zurück.
+     * Returns the current weather data for a given city.
      *
-     * @param city Name der Stadt (z. B. "Berlin")
-     * @return CityWeatherData mit aktuellen Wetterinformationen
+     * @param city The name of the city (e.g., "Berlin")
+     * @return A {@link CityWeatherData} object with current weather information
      */
-    @Operation(summary = "Aktuelles Wetter", description = "Liefert aktuelle Wetterdaten für die angegebene Stadt.")
+    @Operation(summary = "Current weather", description = "Returns current weather data for the specified city.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Erfolgreich abgerufen"),
-            @ApiResponse(responseCode = "400", description = "Fehlerhafte Anfrage (z. B. ungültiger Stadtnamen)")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "400", description = "Bad request (e.g., invalid city name)")
     })
     @GetMapping("/weather")
     public ResponseEntity<CityWeatherData> getWeather(@RequestParam String city) {
         try {
+            // Delegate to the service to fetch weather data
             CityWeatherData data = weatherService.getWeatherForCity(city);
             return ResponseEntity.ok(data);
         } catch (Exception e) {
+            // Return 400 if the city is invalid or another error occurs
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
     /**
-     * Gibt eine stündliche Wettervorhersage für eine Stadt zurück.
+     * Returns the hourly weather forecast for a given city.
      *
-     * @param city Name der Stadt
-     * @return HourlyWeatherResponse mit Wetterdaten für die nächsten Stunden
+     * @param city The name of the city
+     * @return A {@link HourlyWeatherResponse} with weather forecast for the next hours
      */
-    @Operation(summary = "Stündliche Wettervorhersage", description = "Gibt die Wettervorhersage für die nächsten Stunden aus.")
+    @Operation(summary = "Hourly forecast", description = "Provides the weather forecast for the upcoming hours.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Erfolgreich abgerufen")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
     })
     @GetMapping("/hourly")
     public ResponseEntity<HourlyWeatherResponse> getHourlyWeather(@RequestParam String city) {
+        // Fetch hourly forecast via weather service
         HourlyWeatherResponse response = weatherService.getHourlyWeatherForCity(city);
         return ResponseEntity.ok(response);
     }
 
     /**
-     * Gibt eine tägliche Wettervorhersage für die nächsten Tage zurück.
+     * Returns the daily weather forecast for the coming days for a given city.
      *
-     * @param city Name der Stadt
-     * @return DailyWeatherResponse mit täglichen Wetterdaten
+     * @param city The name of the city
+     * @return A {@link DailyWeatherResponse} object containing daily forecasts
      */
-    @Operation(summary = "Tägliche Wettervorhersage", description = "Liefert die Wettervorhersage für mehrere Tage für eine Stadt.")
+    @Operation(summary = "Daily forecast", description = "Returns a multi-day weather forecast for a specified city.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Erfolgreich abgerufen"),
-            @ApiResponse(responseCode = "404", description = "Stadt nicht gefunden oder keine Wetterdaten verfügbar")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "City not found or no weather data available")
     })
     @GetMapping("/daily")
     public ResponseEntity<DailyWeatherResponse> getDailyWeather(@RequestParam String city) {
+        // Fetch daily forecast from the weather service
         DailyWeatherResponse response = weatherService.getDailyWeatherByCity(city);
+
+        // Return 404 if no data is available
         if (response == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
         return ResponseEntity.ok(response);
     }
 }

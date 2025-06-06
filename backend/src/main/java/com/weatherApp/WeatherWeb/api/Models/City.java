@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Die {@code City}-Entität stellt eine vom Benutzer gespeicherte Stadt dar,
- * zu der Wetterdaten abgerufen werden können.
- * Jede Stadt gehört eindeutig zu einem Benutzer.
+ * The {@code City} entity represents a city saved by a user.
+ * Weather data can be retrieved for this city, and each city is associated with exactly one user.
  */
 @Entity
 @Table(
@@ -14,34 +13,34 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 @UniqueConstraint(columnNames = {"user_id", "name"})
         }
 )
-@Schema(description = "Repräsentiert eine vom Benutzer gespeicherte Stadt.")
+@Schema(description = "Represents a city saved by a user.")
 public class City {
 
     /**
-     * Eindeutige ID der Stadt (Primärschlüssel, automatisch generiert).
+     * Unique ID of the city (primary key, auto-generated).
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Eindeutige ID der Stadt", example = "42")
+    @Schema(description = "Unique identifier of the city", example = "42")
     private Long id;
 
     /**
-     * Name der Stadt, z.B. "Berlin" oder "New York".
-     * In Kombination mit dem Benutzer eindeutig.
+     * Name of the city, e.g., "Berlin" or "New York".
+     * The combination of user and city name must be unique.
      */
-    @Schema(description = "Name der Stadt", example = "Berlin", required = true)
+    @Schema(description = "Name of the city", example = "Berlin", required = true)
     private String name;
 
     /**
-     * Benutzer, dem die Stadt zugeordnet ist.
-     * Eine Stadt gehört genau zu einem Benutzer.
+     * The user who owns this city entry.
+     * Each city belongs to exactly one user.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @Schema(description = "Benutzer, dem diese Stadt gehört (intern verknüpft über user_id).", hidden = true)
+    @Schema(description = "User who owns this city (internally linked via user_id)", hidden = true)
     private User user;
 
-    // Getter und Setter
+    // Getters and setters
 
     public Long getId() {
         return id;
