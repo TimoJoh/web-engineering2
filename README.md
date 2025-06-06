@@ -29,6 +29,6 @@ http://localhost:8080/swagger-ui/index.html
 
 ### H2 Datenbank
 http://localhost:8080/h2-console
-1. jdbc:h2:file:./Database/weatherDB ins JDBC URL Feld
-2. User Name: sa
-3. kein Passwort
+- JDBC URL: jdbc:h2:file:./Database/weatherDB 
+- User Name: sa
+- kein Passwort
