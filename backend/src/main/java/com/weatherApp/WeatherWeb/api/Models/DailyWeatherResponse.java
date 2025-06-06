@@ -34,7 +34,7 @@ public class DailyWeatherResponse {
     public void setList(List<Daily> list) {
         this.list = list;
 
-        if (city != null && city.getTimezone() != 0) {
+        if (city != null) {
             for (Daily daily : list) {
                 daily.setWeekdayFromUnix(city.getTimezone());
             }
