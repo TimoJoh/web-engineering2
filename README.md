@@ -4,7 +4,7 @@ Gruppenmitglieder: Omer Butt, Benjamin Peiter, Timo Johannsen
 Arbeitsaufteilung: 
   - Frontend: Omer Butt, Timo Johannsen
   - Backend: Omer Butt, Benjamin Peiter
-
+  - Pair-Programming
 ---
 
 ## Frontend starten 
