@@ -48,7 +48,7 @@ const DetailSunsetRise = ({data}) => {
                 const total = sunsetTime - sunriseTime;
                 const passed = now - sunriseTime;
                 const percent = passed / total;
-                angle = percent * 180; // 0°–180°
+                angle = percent * 180;
                 isDay = true;
             } else {
                 // Nighttime
@@ -67,7 +67,7 @@ const DetailSunsetRise = ({data}) => {
                 const total = nightEnd - nightStart;
                 const passed = now - nightStart;
                 const percent = passed / total;
-                angle = 180 + percent * 180; // 180°–360°
+                angle = 180 + percent * 180;
             }
 
             setAngle(angle);

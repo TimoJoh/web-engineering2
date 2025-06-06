@@ -27,7 +27,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
                     password: password,
                 }),
                 credentials: "include",
-                redirect: "manual", // wichtig!
+                redirect: "manual",
 
             });
 
@@ -53,6 +53,7 @@ function LoginModal({ onClose, onSwitchToRegister }) {
                 } else {
                     setFirstName("");
                 }
+                window.location.reload();
             } else {
                 setError("Login failed. Bitte überprüfe die Zugangsdaten.");
             }
@@ -60,7 +61,6 @@ function LoginModal({ onClose, onSwitchToRegister }) {
             console.error("Fehler beim Login:", err);
             setError("Ein Fehler ist aufgetreten.");
         }
-        window.location.reload();
     };
 
     // create Login Popup -> add to modal root to fill screen

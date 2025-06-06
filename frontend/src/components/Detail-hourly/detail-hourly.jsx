@@ -41,12 +41,12 @@ const generateColorStops = (temperatures, tempColorMap) => {
     return stops;
 };
 
-// Generate color stops for the line temperature gradient (offset different -> not starting on X-Axis)
+// Generate color stops for the line temperature gradient (offset different -> does not start on X-Axis)
 const generateColorStopsLine = (temperatures, tempColorMap) => {
     const maxTemp = Math.max(...temperatures);
     const minTemp = Math.min(...temperatures);
     const extendedMin = minTemp - 10;
-    const midPoint = extendedMin + 0.475* (maxTemp - extendedMin); // 50% buffer start
+    const midPoint = extendedMin + 0.475* (maxTemp - extendedMin);
 
     const stops = [];
 

@@ -48,7 +48,7 @@ export function getWeatherIcon(condition, currentTime, sunriseTime, sunsetTime) 
 export function getWeatherIconDayOnly(condition) {
     const map = {
         'clear sky': 'clear-day',
-        'sky is clear': 'clear-day',  // neu hinzugefügt
+        'sky is clear': 'clear-day',
         'few clouds': 'cloudy-1-day',
         'scattered clouds': 'cloudy',
         'broken clouds': 'cloudy',

@@ -36,7 +36,7 @@
 .modal form {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0 0.5rem;
 }
 
 .modal input {
@@ -171,5 +171,12 @@
         width: 100%;
         padding: 0.5rem;
     }
+}
+
+.error{
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: center;
 }
 
